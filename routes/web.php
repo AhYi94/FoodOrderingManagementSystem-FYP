@@ -20,8 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('/admin/users', 'Admin\UserController')->except(['show' , 'create', 'store']);
+    Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+    Route::resource('/users', 'UsersController');
 });
