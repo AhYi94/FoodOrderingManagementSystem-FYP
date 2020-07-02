@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -57,7 +60,7 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -69,7 +72,14 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $flight = User::find($user->id);
+        $input = $request->all();
+        $flight->fill($input);
+        $flight->fill(['password' => Hash::make($request->password)]);
+
+       
+        $flight->save();
+        return redirect('users/'.$flight->id.'/edit')->with(['message' => 'Profile updated!', 'alert' => 'success']);
     }
 
     /**
