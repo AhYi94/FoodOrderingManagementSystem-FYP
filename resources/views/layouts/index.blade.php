@@ -17,6 +17,11 @@
     <link href="/assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/assets/css/demo.css" rel="stylesheet" />
+    <style>
+        /* #user-table_wrapper{
+            display: flex;
+        } */
+    </style>
 </head>
 
 <body>
@@ -55,9 +60,16 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="profile-dropdown" href="{{ route('users.edit', $user->id) }}">
+                                    <a class="profile-dropdown" href="{{ route('users.edit', $user->id ?? '') }}">
                                         <span class="sidebar-mini">EP</span>
                                         <span class="sidebar-normal">Edit Profile</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a class="profile-dropdown" href="{{ route('users.index') }}">
+                                        <span class="sidebar-mini">VP</span>
+                                        <span class="sidebar-normal">View All Profile</span>
                                     </a>
                                 </li>
                                 <li>
@@ -72,7 +84,7 @@
                 </div>
                 <ul class="nav">
                     <li class="nav-item ">
-                    <a class="nav-link" href="{{route('dashboard')}}">
+                        <a class="nav-link" href="{{route('dashboard')}}">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Dashboard</p>
                         </a>
@@ -377,7 +389,8 @@
                                         <i class="nc-icon nc-button-power"></i> Log out
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        style="display: none;">
                                         @csrf
                                     </form>
                                 </div>
@@ -391,6 +404,7 @@
             @yield('content')
         </div>
     </div>
+
 </body>
 <!--   Core JS Files   -->
 <script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
@@ -399,7 +413,7 @@
 <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
 <script src="/assets/js/plugins/bootstrap-switch.js"></script>
 <!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?YOUR_KEY_HERE"></script>
+{{-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?YOUR_KEY_HERE"></script> --}}
 <!--  Chartist Plugin  -->
 <script src="/assets/js/plugins/chartist.min.js"></script>
 <!--  Notifications Plugin    -->
@@ -424,8 +438,6 @@
 <script src="/assets/js/plugins/jquery.bootstrap-wizard.js"></script>
 <!--  Bootstrap Table Plugin -->
 <script src="/assets/js/plugins/bootstrap-table.js"></script>
-<!--  DataTable Plugin -->
-<script src="/assets/js/plugins/jquery.dataTables.min.js"></script>
 <!--  Full Calendar   -->
 <script src="/assets/js/plugins/fullcalendar.min.js"></script>
 <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
@@ -441,6 +453,8 @@
 
     });
 </script>
-
+<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 @stack('scripts')
+
 </html>
