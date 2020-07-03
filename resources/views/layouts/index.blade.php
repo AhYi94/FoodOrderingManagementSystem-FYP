@@ -60,7 +60,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="profile-dropdown" href="{{ route('users.edit', $user->id ?? '') }}">
+                                    <a class="profile-dropdown" href="{{ route('users.edit', $user->id) }}">
                                         <span class="sidebar-mini">EP</span>
                                         <span class="sidebar-normal">Edit Profile</span>
                                     </a>
@@ -409,6 +409,8 @@
 <!--   Core JS Files   -->
 <script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
 <script src="/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="{{ mix('js/app.js') }}"></script>
+<script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 <script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
 <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
 <script src="/assets/js/plugins/bootstrap-switch.js"></script>
@@ -453,8 +455,6 @@
 
     });
 </script>
-<script src="{{ mix('js/app.js') }}"></script>
-<script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
 @stack('scripts')
 
 </html>

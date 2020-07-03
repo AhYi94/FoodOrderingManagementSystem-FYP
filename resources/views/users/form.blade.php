@@ -29,7 +29,7 @@
                                             <div class="form-group">
                                                 <label>Password</label>
                                                 <input name="password" type="password" class="form-control"
-                                                    placeholder="Password" value="{{$user->password}}">
+                                                    placeholder="Password" value="">
                                             </div>
                                         </div>
                                     </div>

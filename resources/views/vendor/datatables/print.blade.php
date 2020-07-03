@@ -35,3 +35,10 @@
         </table>
     </body>
 </html>
+
+<script>
+    window.print();
+    setTimeout(function () {
+        window.close();
+    }, 500);
+</script>

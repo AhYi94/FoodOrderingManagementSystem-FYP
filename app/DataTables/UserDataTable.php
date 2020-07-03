@@ -21,7 +21,8 @@ class UserDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'user.action');
+            ->addColumn('action', function($query){return '<a href='. route('users.edit',$query ).' class="btn btn-primary">Edit</a>';})
+            ->editColumn('created_at', function ($query) {return $query->created_at->format('d.m.Y');});
     }
 
     /**
@@ -49,7 +50,6 @@ class UserDataTable extends DataTable
             ->dom('<"top d-flex justify-content-between"Bf>rt<"bottom"lp><"clear">')
             ->orderBy(1, 'acs')
             ->buttons(
-                Button::make('create'),
                 Button::make('excel'),
                 Button::make('print'),
             );
@@ -63,16 +63,16 @@ class UserDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('action')
-                ->exportable(false)
-                ->printable(false)
-                ->width(60)
-                ->addClass('text-center'),
             Column::make('id'),
             Column::make('name'),
             Column::make('email'),
             Column::make('created_at'),
             Column::make('updated_at'),
+            Column::computed('action')
+                ->exportable(false)
+                ->printable(false)
+                ->width(150)
+                ->addClass('text-center'),
         ];
     }
 

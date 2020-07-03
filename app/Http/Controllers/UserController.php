@@ -18,7 +18,8 @@ class UserController extends Controller
      */
     public function index(UserDataTable $dataTable)
     {
-        return $dataTable->render('users.index');
+        $user = \Auth::user();
+        return $dataTable->render('users.index', compact('user'));
     }
 
     /**
@@ -73,14 +74,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $flight = User::find($user->id);
-        $input = $request->all();
-        $flight->fill($input);
-        $flight->fill(['password' => Hash::make($request->password)]);
+        $current_user = User::find($user->id);
+        $input = $request->except('password');
+        $current_user->fill($input);
 
-       
-        $flight->save();
-        return redirect('users/'.$flight->id.'/edit')->with(['message' => 'Profile updated!', 'alert' => 'success']);
+        if ($request->filled('password')) {
+            $current_user->fill(['password' => Hash::make($request->password)]);
+        }
+
+        $current_user->save();
+        return redirect('users/' . $current_user->id . '/edit')->with(['message' => 'Profile updated!', 'alert' => 'success']);
     }
 
     /**
