@@ -50,6 +50,7 @@ class UserDataTable extends DataTable
             ->dom('<"top d-flex justify-content-between"Bf>rt<"bottom"lp><"clear">')
             ->orderBy(1, 'acs')
             ->buttons(
+                Button::make('create'),
                 Button::make('excel'),
                 Button::make('print'),
             );

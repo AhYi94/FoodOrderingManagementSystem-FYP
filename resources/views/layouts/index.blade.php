@@ -60,7 +60,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="profile-dropdown" href="{{ route('users.edit', $user->id) }}">
+                                    <a class="profile-dropdown" href="{{ route('users.edit', $user->id ?? '') }}">
                                         <span class="sidebar-mini">EP</span>
                                         <span class="sidebar-normal">Edit Profile</span>
                                     </a>
