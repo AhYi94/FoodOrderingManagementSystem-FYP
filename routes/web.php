@@ -23,4 +23,5 @@ Auth::routes();
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'HomeController@index')->name('dashboard');
     Route::resource('/users', 'UserController');
+    Route::resource('/food-menu', 'FoodMenuController');
 });

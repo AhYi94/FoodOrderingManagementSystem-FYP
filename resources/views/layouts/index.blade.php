@@ -89,6 +89,12 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{route('food-menu.index')}}">
+                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <p>Food Menu</p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
                             <i class="nc-icon nc-app"></i>
