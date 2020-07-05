@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\DataTables\UserDataTable;
+use App\Models\User;
 
 class UserController extends Controller
 {
