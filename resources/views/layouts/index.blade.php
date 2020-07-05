@@ -65,13 +65,6 @@
                                         <span class="sidebar-normal">Edit Profile</span>
                                     </a>
                                 </li>
-
-                                <li>
-                                    <a class="profile-dropdown" href="{{ route('users.index') }}">
-                                        <span class="sidebar-mini">VP</span>
-                                        <span class="sidebar-normal">View All Profile</span>
-                                    </a>
-                                </li>
                                 <li>
                                     <a class="profile-dropdown" href="#pablo">
                                         <span class="sidebar-mini">S</span>
@@ -91,8 +84,14 @@
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="{{route('food-menu.index')}}">
-                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <i class="nc-icon nc-apple"></i>
                             <p>Food Menu</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('users.index') }}">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>User</p>
                         </a>
                     </li>
                     <li class="nav-item">

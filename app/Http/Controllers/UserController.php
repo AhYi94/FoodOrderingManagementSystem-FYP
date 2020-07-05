@@ -102,6 +102,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        $validatedData = $request->validate([
+            'email' => 'required|unique:users|max:255',
+            'name' => 'required',
+            'password' => 'required|confirmed',
+            'password_confirmation' => 'required_with:password',
+        ]);
+
         $current_user = User::find($user->id);
         $input = $request->except('password');
         $current_user->fill($input);
