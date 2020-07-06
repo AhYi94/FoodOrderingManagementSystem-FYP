@@ -61,13 +61,13 @@ class UserController extends Controller
         ]);
 
 
-        $current_user = new User;
+        $user_data = new User;
         $input = $request->all();
-        $current_user->email_verified_at = now();
-        $current_user->role = 'user';
-        $current_user->fill($input);
+        $user_data->email_verified_at = now();
+        $user_data->role = 'user';
+        $user_data->fill($input);
 
-        $current_user->save();
+        $user_data->save();
         return redirect('users/create')->with(['message' => 'User created!', 'alert' => 'success']);
     }
 

@@ -17,13 +17,14 @@
                                         <h4 class="card-title">Edit Profile</h4>
                                     </div>
                                 </div>
-                                @include('users.form')
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Update
-                                    Profile</button>
-                                <div class="clearfix"></div>
+                                <div class="card-body ">
+                                    @include('users.form')
+                                    <button type="submit" class="btn btn-info btn-fill pull-right">Update</button>
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
+                        </form>
                     </div>
-                    </form>
                 </div>
                 {{-- <div class="col-md-4">
                     <div class="card card-user">

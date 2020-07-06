@@ -21,12 +21,16 @@ class UserDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', function($query){
-                $actions = '<a href='. route('users.edit',$query ).' class="btn btn-info btn-sm mr-1">Edit</a>';
-                $actions .=  '<a href='. route('users.destroy',$query ).' onclick="return confirm(\'Are you sure you want to delete this user?\');" class="btn btn-danger btn-sm">Delete</a>';
+            ->addColumn('action', function ($query) {
+                $actions = '<a href=' . route('users.edit', $query) . ' class="btn btn-info btn-sm mr-1">Edit</a>';
+                $actions .=  '<a href=' . route('users.destroy', $query) . ' onclick="return confirm(\'Are you sure you want to delete this user?\');" class="btn btn-danger btn-sm">Delete</a>';
                 return $actions;
             })
-            ->editColumn('created_at', function ($query) {return $query->created_at->format('d.m.Y');});
+            ->editColumn('created_at', function ($query) {
+                return $query->created_at->format('d.m.Y');
+            })->editColumn('updated_at', function ($query) {
+                return $query->updated_at->format('d.m.Y');
+            });
     }
 
     /**

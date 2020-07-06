@@ -17,10 +17,12 @@
                                         <h4 class="card-title">Create User</h4>
                                     </div>
                                 </div>
-                                @include('users.form')
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Create
-                                    User</button>
-                                <div class="clearfix"></div>
+                                <div class="card-body ">
+                                    @include('users.form')
+                                    <button type="submit" class="btn btn-info btn-fill pull-right">Create
+                                        User</button>
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
                     </div>
                     </form>

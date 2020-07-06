@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FoodMenu extends Model
 {
-    //
+    protected $fillable = [
+        'name','image'
+    ];
 }

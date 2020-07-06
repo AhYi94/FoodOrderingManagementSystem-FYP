@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\FoodMenusDataTable;
 use App\Models\FoodMenu;
+use Carbon\Carbon;
+use Carbon\Traits\Timestamp;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class FoodMenuController extends Controller
 {
@@ -12,9 +16,9 @@ class FoodMenuController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(FoodMenusDataTable $dataTable)
     {
-        return '123';
+        return $dataTable->render('food-menus.index');
     }
 
     /**
@@ -24,7 +28,7 @@ class FoodMenuController extends Controller
      */
     public function create()
     {
-        //
+        return view('food-menus.create');
     }
 
     /**
@@ -35,7 +39,22 @@ class FoodMenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'image' => 'required|image',
+            'name' => 'required',
+        ]);
+
+        $food_data = new FoodMenu();
+        $input = $request->all();
+        $food_data->fill($input);
+
+        $timestamp = str_replace([' ', ':'], '-', Carbon::now()->toDateTimeString());
+        $file_name = $timestamp.'-'.$request->file('image')->getClientOriginalName();
+        $food_data->image = 'storage/'. $file_name;
+        $request->file('image')->storeAs('public' , $file_name);
+
+        $food_data->save();
+        return redirect('food-menu/create')->with(['message' => 'User created!', 'alert' => 'success']);
     }
 
     /**
@@ -57,7 +76,7 @@ class FoodMenuController extends Controller
      */
     public function edit(FoodMenu $foodMenu)
     {
-        //
+        return view('food-menus.edit', compact('foodMenu'));
     }
 
     /**

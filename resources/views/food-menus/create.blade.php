@@ -8,22 +8,26 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-sm-6">
-                        <form class="form" method="POST" action="{{ route('users.store') }}">
+                        <form class="form" method="POST" enctype="multipart/form-data"
+                            action="{{ route('food-menu.store') }}">
                             @csrf
                             @method('POST')
                             <div class="card ">
                                 <div class="card-header ">
                                     <div class="card-header">
-                                        <h4 class="card-title">Create User</h4>
+                                        <h4 class="card-title">Create Food Menu</h4>
                                     </div>
                                 </div>
-                                @include('users.form')
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Create
-                                    User</button>
-                                <div class="clearfix"></div>
+                                <div class="card-body ">
+                                    @include('food-menus.form')
+                                    <button type="submit" class="btn btn-info btn-fill pull-right">Create
+                                        Food Menu</button>
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
+                        </form>
                     </div>
-                    </form>
+
                 </div>
                 {{-- <div class="col-md-4">
                     <div class="card card-user">
