@@ -109,16 +109,16 @@ class UserController extends Controller
             'password_confirmation' => 'required_with:password',
         ]);
 
-        $current_user = User::find($user->id);
+        $user_data = User::find($user->id);
         $input = $request->except('password');
-        $current_user->fill($input);
+        $user_data->fill($input);
 
         if ($request->filled('password')) {
-            $current_user->fill(['password' => Hash::make($request->password)]);
+            $user_data->fill(['password' => Hash::make($request->password)]);
         }
 
-        $current_user->save();
-        return redirect('users/' . $current_user->id . '/edit')->with(['message' => 'Profile updated!', 'alert' => 'success']);
+        $user_data->save();
+        return redirect('users/' . $user_data->id . '/edit')->with(['message' => 'Profile updated!', 'alert' => 'success']);
     }
 
     /**
@@ -129,8 +129,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $current_user = User::find($user->id);
-        $current_user->delete();
+        $user_data = User::find($user->id);
+        $user_data->delete();
         return redirect('users')->with(['message' => 'User deleted!', 'alert' => 'success']);
     }
 }

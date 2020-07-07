@@ -33,7 +33,7 @@ class FoodMenusDataTable extends DataTable
                 return $query->updated_at->format('d.m.Y');
             })
             ->editColumn('image', function ($query) {
-                return '<img src="' . asset($query->image) . '" border="0" width="100%" class="img-rounded" align="center" />';
+                return '<img src="storage/' . $query->image . '" border="0" width="100%" class="img-rounded" align="center" />';
             })->rawColumns(['image', 'action']);
     }
     /**

@@ -50,11 +50,11 @@ class FoodMenuController extends Controller
 
         $timestamp = str_replace([' ', ':'], '-', Carbon::now()->toDateTimeString());
         $file_name = $timestamp.'-'.$request->file('image')->getClientOriginalName();
-        $food_data->image = 'storage/'. $file_name;
+        $food_data->image = $file_name;
         $request->file('image')->storeAs('public' , $file_name);
 
         $food_data->save();
-        return redirect('food-menu/create')->with(['message' => 'User created!', 'alert' => 'success']);
+        return redirect('food-menu/create')->with(['message' => 'Food Menu created!', 'alert' => 'success']);
     }
 
     /**
@@ -88,7 +88,23 @@ class FoodMenuController extends Controller
      */
     public function update(Request $request, FoodMenu $foodMenu)
     {
-        //
+        $validatedData = $request->validate([
+            'image' => 'nullable|image',
+            'name' => 'required',
+        ]);
+
+        $food_data = FoodMenu::find($foodMenu->id);
+        $input = $request->all();
+        $food_data->fill($input);
+        if($request->hasFile('image')){
+            Storage::delete('public/'.$foodMenu->image);
+            $timestamp = str_replace([' ', ':'], '-', Carbon::now()->toDateTimeString());
+            $file_name = $timestamp.'-'.$request->file('image')->getClientOriginalName();
+            $food_data->image = $file_name;
+            $request->file('image')->storeAs('public' , $file_name);
+        }
+        $food_data->save();
+        return redirect('food-menu/' . $food_data->id . '/edit')->with(['message' => 'Food Menu updated!', 'alert' => 'success']);
     }
 
     /**
