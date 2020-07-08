@@ -83,7 +83,7 @@
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="{{route('food-menu.index')}}">
+                        <a class="nav-link" href="{{route('food-menus.index')}}">
                             <i class="nc-icon nc-apple"></i>
                             <p>Food Menu</p>
                         </a>
@@ -92,6 +92,12 @@
                         <a class="nav-link" href="{{ route('users.index') }}">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>User</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('schedules.create') }}">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Ordering Schedule</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -416,7 +422,7 @@
 <script src="/assets/js/core/popper.min.js" type="text/javascript"></script>
 <script src="{{ mix('js/app.js') }}"></script>
 <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
-<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+{{-- <script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script> --}}
 <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
 <script src="/assets/js/plugins/bootstrap-switch.js"></script>
 <!--  Google Maps Plugin    -->
