@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-sm-6">
-                        <form class="form" method="POST" enctype="multipart/form-data" action="{{ route('food-menu.update', $foodMenu->id) }}">
+                        <form class="form" method="POST" enctype="multipart/form-data" action="{{ route('food-menus.update', $foodMenu->id) }}">
                             @csrf
                             @method('PUT')
                             <div class="card ">

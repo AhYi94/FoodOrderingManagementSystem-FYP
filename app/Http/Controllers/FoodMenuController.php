@@ -54,7 +54,7 @@ class FoodMenuController extends Controller
         $request->file('image')->storeAs('public' , $file_name);
 
         $food_data->save();
-        return redirect('food-menu/create')->with(['message' => 'Food Menu created!', 'alert' => 'success']);
+        return redirect('food-menus/create')->with(['message' => 'Food Menu created!', 'alert' => 'success']);
     }
 
     /**
@@ -104,7 +104,7 @@ class FoodMenuController extends Controller
             $request->file('image')->storeAs('public' , $file_name);
         }
         $food_data->save();
-        return redirect('food-menu/' . $food_data->id . '/edit')->with(['message' => 'Food Menu updated!', 'alert' => 'success']);
+        return redirect('food-menus/' . $food_data->id . '/edit')->with(['message' => 'Food Menu updated!', 'alert' => 'success']);
     }
 
     /**
