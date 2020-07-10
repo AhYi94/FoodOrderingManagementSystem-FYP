@@ -100,6 +100,12 @@
                             <p>Ordering Schedule</p>
                         </a>
                     </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('orders.index') }}">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Order</p>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
                             <i class="nc-icon nc-app"></i>

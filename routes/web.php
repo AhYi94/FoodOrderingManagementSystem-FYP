@@ -33,4 +33,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Schedule Route
     Route::resource('/schedules', 'ScheduleController');
+
+    //Order Route
+    Route::resource('/orders', 'OrderController');
 });

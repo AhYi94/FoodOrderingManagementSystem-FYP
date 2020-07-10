@@ -12,8 +12,8 @@
     <div class="col-md-6 ">
         <div class="form-group">
             <label for="date">Date</label>
-            <input id="datetimepicker" type="text" class="form-control datepicker" name="date" placeholder="Date Picker Here"
-                value="{{ old('date',$schedule->date ?? '') }}" />
+            <input id="datetimepicker" type="text" class="form-control datepicker" name="date"
+                placeholder="Date Picker Here" value="{{ old('date',$schedule->date ?? '') }}" />
         </div>
     </div>
 </div>
@@ -37,8 +37,8 @@
     <div class="col-md-6">
         <select multiple data-title="Select Food Item" name="fooditem[]" class="selectpicker"
             data-style="btn-info btn-fill btn-block" data-menu-style="dropdown-blue">
-            @foreach (App\Models\FoodMenu::all() as $item)
-            <option value={{$item->id}}>{{$item->name}}</option>
+            @foreach ($fooditems as $fooditem)
+            <option value={{$fooditem->id}}>{{$fooditem->name}}</option>
             @endforeach
         </select>
     </div>

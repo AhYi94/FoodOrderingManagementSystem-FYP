@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FoodMenu;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,13 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        return view('schedules.create');
+        $fooditems = FoodMenu::all();
+        $schedule_items = Schedule::all();
+        // Backup
+        // $schedule_items = Schedule::pluck('foodmenu_id');
+        // $schedule_itemstest = FoodMenu::whereIn('id', $schedule_items)->get();
+        // return $schedule_itemstest;
+        return view('schedules.create', compact('fooditems', 'schedule_items'));
     }
 
     /**
