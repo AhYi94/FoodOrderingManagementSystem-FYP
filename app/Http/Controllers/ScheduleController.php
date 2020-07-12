@@ -53,6 +53,7 @@ class ScheduleController extends Controller
 
             $schedule_data->foodmenu_id = $fooditem;
             $schedule_data->save();
+            return redirect('schedules/create')->with(['message' => 'Schedule created!', 'alert' => 'success']);
         }
         // return $request->get('fooditem');
     }

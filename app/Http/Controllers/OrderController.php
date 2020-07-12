@@ -6,6 +6,7 @@ use App\Models\FoodMenu;
 use App\Models\Order;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -37,10 +38,26 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $date)
     {
-        //
+        
+        $i = 0;
+        
+        foreach ($request->quantity as $quantity) {
+            if ($quantity) {
+                $order_data = new Order();
+                $order_data->schedule_date = Schedule::where('date', $date)->pluck('id')[$i];
+                $order_data->user_id = Auth::user()->id;
+                $order_data->foodmenu_id = $request->id[$i];
+                $order_data->quantity = $request->quantity[$i];
+                $order_data->save();
+            } 
+            $i++;
+        }
+
+        return redirect('orders')->with(['message' => 'Order successful!', 'alert' => 'success']);
     }
+
 
     /**
      * Display the specified resource.
@@ -51,7 +68,7 @@ class OrderController extends Controller
     public function show($date)
     {
         $date_orders = Schedule::where('date', $date)->get();
-        return view('orders.show-order', compact('date_orders'));
+        return view('orders.show-order', compact('date_orders','date'));
     }
 
     /**

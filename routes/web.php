@@ -35,5 +35,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/schedules', 'ScheduleController');
 
     //Order Route
-    Route::resource('/orders', 'OrderController');
+    Route::resource('/orders', 'OrderController')->except('store');
+    Route::post('/orders/{order}', 'OrderController@store')->name('orders.store');
 });
