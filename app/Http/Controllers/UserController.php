@@ -62,9 +62,10 @@ class UserController extends Controller
 
 
         $user_data = new User;
-        $input = $request->all();
+        $input = $request->except('password');
         $user_data->email_verified_at = now();
         $user_data->role = 'user';
+        $user_data->password = Hash::make($request->password);
         $user_data->fill($input);
 
         $user_data->save();
@@ -103,9 +104,9 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
-            'email' => 'required|unique:users|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id . ',id',
             'name' => 'required',
-            'password' => 'required|confirmed',
+            'password' => 'nullable|confirmed',
             'password_confirmation' => 'required_with:password',
         ]);
 

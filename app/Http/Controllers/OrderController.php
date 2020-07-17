@@ -18,7 +18,7 @@ class OrderController extends Controller
     public function index()
     {
         $fooditems = FoodMenu::all();
-        $schedule_items = Schedule::all()->groupBy('date');
+        $schedule_items = Schedule::orderBy('date')->get()->groupBy('date');
         return view('orders.index', compact('fooditems', 'schedule_items'));
     }
 
@@ -40,9 +40,7 @@ class OrderController extends Controller
      */
     public function store(Request $request, $date)
     {
-        
         $i = 0;
-        
         foreach ($request->quantity as $quantity) {
             if ($quantity) {
                 $order_data = new Order();
