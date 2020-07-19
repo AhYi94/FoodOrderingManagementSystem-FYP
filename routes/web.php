@@ -37,4 +37,7 @@ Route::group(['middleware' => ['auth']], function () {
     //Order Route
     Route::resource('/orders', 'OrderController')->except('store');
     Route::post('/orders/{order}', 'OrderController@store')->name('orders.store');
+
+    //Top-Up Route
+    Route::resource('/top-ups', 'TopUpController')->except('store');
 });
