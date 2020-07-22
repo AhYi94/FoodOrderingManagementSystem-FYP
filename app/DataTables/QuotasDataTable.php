@@ -21,7 +21,10 @@ class QuotasDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', 'quotas.action');
+            ->addColumn('action', function ($query) {
+                $actions = '<a href=' . route('top-ups.show', $query) . ' class="btn btn-info btn-sm mr-1">Top-Up</a>';
+                return $actions;
+            });
     }
 
     /**
@@ -32,7 +35,7 @@ class QuotasDataTable extends DataTable
      */
     public function query(Quota $model)
     {
-        return $model->newQuery();
+        return $model->newQuery()->with(['user']);
     }
 
     /**
@@ -70,8 +73,8 @@ class QuotasDataTable extends DataTable
                   ->printable(false)
                   ->width(60)
                   ->addClass('text-center'),
-            Column::make('id'),
-            Column::make('add your columns'),
+            Column::make('user.name')->title('Name'),
+            Column::make('balance'),
             Column::make('created_at'),
             Column::make('updated_at'),
         ];

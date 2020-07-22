@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\DataTables\UserDataTable;
+use App\Models\Quota;
 use App\Models\User;
 
 class UserController extends Controller
@@ -67,8 +68,12 @@ class UserController extends Controller
         $user_data->role = 'user';
         $user_data->password = Hash::make($request->password);
         $user_data->fill($input);
-
         $user_data->save();
+
+        $quota_data = new Quota;
+        $quota_data->user_id = $user_data->id;
+        $quota_data->balance = 0;
+        $quota_data->save();
         return redirect('users/create')->with(['message' => 'User created!', 'alert' => 'success']);
     }
 
