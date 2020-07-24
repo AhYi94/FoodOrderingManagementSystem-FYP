@@ -2,14 +2,16 @@
 
 namespace App\DataTables;
 
-use App\Models\Quota;
+use App\Models\Order;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class QuotasDataTable extends DataTable
+class OrdersDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -22,23 +24,33 @@ class QuotasDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('action', function ($query) {
-                $actions = '<a href=' . route('top-ups.show', $query->user->id) . ' class="btn btn-info btn-sm mr-1">Top-Up</a>';
+                $actions = '<a href=' . route('admin.orders.showSchedule', $query->id) . ' class="btn btn-info btn-sm mr-1">Order</a>';
                 return $actions;
             })
-            ->addColumn('name', function ($query) {
-                return $query->user->name;
+            ->filterColumn('address', function($query, $keyword) {
+                $sql = "CONCAT(users.address,'-',users.city)  like ?";
+                $query->whereRaw($sql, ["%{$keyword}%"]);
             });
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Quota $model
+     * @param \App\Order $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Quota $model)
+    public function query(User $model)
     {
-        return $model->newQuery();
+        $model = User::select([
+            'id',
+            'name',
+            DB::raw("CONCAT(users.address,' ',users.city,' ',users.country) as address"),
+            'email',
+            'created_at',
+            'updated_at',
+        ]);
+
+        return $model;
     }
 
     /**
@@ -49,14 +61,17 @@ class QuotasDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('quotas-table')
+            ->setTableId('orders-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('Bfrtip')
-            ->orderBy(1)
+            ->orderBy(1, 'asc')
             ->buttons(
-                Button::make('excel'),
-                Button::make('print')
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
             );
     }
 
@@ -73,16 +88,10 @@ class QuotasDataTable extends DataTable
                 ->printable(false)
                 ->width(60)
                 ->addClass('text-center'),
-            Column::computed('name')
-                ->exportable(false)
-                ->width(200)
-                ->addClass('text-center'),
-            Column::make('balance'),
-            Column::make('created_at')
-                ->width(200),
-            Column::make('updated_at')
-                ->width(200),
-
+            Column::make('id'),
+            Column::make('name'),
+            Column::make('email'),
+            Column::make('address'),
         ];
     }
 
@@ -93,6 +102,6 @@ class QuotasDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Quotas_' . date('YmdHis');
+        return 'Orders_' . date('YmdHis');
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\OrdersDataTable;
 use App\Models\FoodMenu;
 use App\Models\Order;
 use App\Models\Schedule;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +22,28 @@ class OrderController extends Controller
     {
         $fooditems = FoodMenu::all();
         $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
-        return view('orders.index', compact('fooditems', 'schedule_items'));
+        
+        if (Auth::user()->role == 'user') {
+            return view('orders.index', compact('fooditems', 'schedule_items'));
+        }
+        else{
+            return abort(404);
+        }
+    }
+
+    public function indexAdmin(OrdersDataTable $ordersDataTable)
+    {
+        return $ordersDataTable->render('orders.admin.index');
+        
+        // $fooditems = FoodMenu::all();
+        // $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
+        
+        // if(Auth::user()->role == 'admin'){
+        //     return view('orders.admin.index', compact('fooditems', 'schedule_items'));
+        // }
+        // else{
+        //     return abort(404);
+        // }
     }
 
     /**
@@ -50,7 +73,7 @@ class OrderController extends Controller
                 $order_data->foodmenu_id = $request->id[$i];
                 $order_data->quantity = $request->quantity[$i];
                 $order_data->save();
-            } 
+            }
             $i++;
         }
 
@@ -67,8 +90,23 @@ class OrderController extends Controller
     public function show($date)
     {
         $date_orders = Schedule::where('date', $date)->get();
-        return view('orders.show-order', compact('date_orders','date'));
+        return view('orders.show-order', compact('date_orders', 'date'));
     }
+
+    public function showScheduleAdmin($user_id)
+    {
+        $fooditems = FoodMenu::all();
+        $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
+        return view('orders.admin.show-schedule', compact('fooditems', 'schedule_items','user_id' ));
+    }
+
+    public function showOrderAdmin($user_id, $date)
+    {
+        $date_orders = Schedule::where('date', $date)->get();
+        return view('orders.show-order', compact('date_orders', 'date', 'user_id'));
+    }
+
+    
 
     /**
      * Show the form for editing the specified resource.

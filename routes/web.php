@@ -38,6 +38,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('/orders', 'OrderController')->except('store');
     Route::post('/orders/{order}', 'OrderController@store')->name('orders.store');
 
+    Route::get('/admin/orders', 'OrderController@indexAdmin')->name('admin.orders.index');
+    Route::get('/admin/orders/{user_id}', 'OrderController@showScheduleAdmin')->name('admin.orders.showSchedule');
+    Route::get('/admin/orders/{user_id}/{date}/adminshow', 'OrderController@showOrderAdmin')->name('admin.orders.showOrder');
+    
+
     //Top-Up Route
     Route::resource('/top-ups', 'TopUpController')->except('store');
 });

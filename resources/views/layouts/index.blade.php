@@ -100,12 +100,23 @@
                             <p>Ordering Schedule</p>
                         </a>
                     </li>
+                    @if (Auth::user()->role == 'admin')
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('admin.orders.index') }}">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Order</p>
+                        </a>
+                    </li> 
+                    @else
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('orders.index') }}">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>Order</p>
                         </a>
-                    </li> 
+                    </li>
+                    @endif
+                     
+                    
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('top-ups.index') }}">
                             <i class="nc-icon nc-circle-09"></i>
