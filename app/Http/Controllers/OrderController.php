@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\FoodMenu;
 use App\Models\Order;
 use App\Models\Schedule;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +19,7 @@ class OrderController extends Controller
     public function index()
     {
         $fooditems = FoodMenu::all();
-        $schedule_items = Schedule::orderBy('date')->get()->groupBy('date');
+        $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
         return view('orders.index', compact('fooditems', 'schedule_items'));
     }
 

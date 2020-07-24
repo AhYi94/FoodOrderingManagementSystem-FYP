@@ -22,8 +22,11 @@ class QuotasDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->addColumn('action', function ($query) {
-                $actions = '<a href=' . route('top-ups.show', $query) . ' class="btn btn-info btn-sm mr-1">Top-Up</a>';
+                $actions = '<a href=' . route('top-ups.show', $query->user->id) . ' class="btn btn-info btn-sm mr-1">Top-Up</a>';
                 return $actions;
+            })
+            ->addColumn('name', function ($query) {
+                return $query->user->name;
             });
     }
 
@@ -35,7 +38,7 @@ class QuotasDataTable extends DataTable
      */
     public function query(Quota $model)
     {
-        return $model->newQuery()->with(['user']);
+        return $model->newQuery();
     }
 
     /**
@@ -46,18 +49,18 @@ class QuotasDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('quotas-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->buttons(
-                        Button::make('create'),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+            ->setTableId('quotas-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('Bfrtip')
+            ->orderBy(1)
+            ->buttons(
+                Button::make('create'),
+                Button::make('export'),
+                Button::make('print'),
+                Button::make('reset'),
+                Button::make('reload')
+            );
     }
 
     /**
@@ -69,14 +72,21 @@ class QuotasDataTable extends DataTable
     {
         return [
             Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-            Column::make('user.name')->title('Name'),
+                ->exportable(false)
+                ->printable(false)
+                ->width(60)
+                ->addClass('text-center'),
+            Column::computed('name')
+            ->exportable(false)
+                ->printable(false)
+                ->width(200)
+                ->addClass('text-center'),
             Column::make('balance'),
-            Column::make('created_at'),
-            Column::make('updated_at'),
+            Column::make('created_at')
+            ->width(200),
+            Column::make('updated_at')
+            ->width(200),
+
         ];
     }
 
