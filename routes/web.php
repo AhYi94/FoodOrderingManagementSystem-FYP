@@ -40,7 +40,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/admin/orders', 'OrderController@indexAdmin')->name('admin.orders.index');
     Route::get('/admin/orders/{user_id}', 'OrderController@showScheduleAdmin')->name('admin.orders.showSchedule');
-    Route::get('/admin/orders/{user_id}/{date}/adminshow', 'OrderController@showOrderAdmin')->name('admin.orders.showOrder');
+    Route::get('/admin/orders/{user_id}/{date}', 'OrderController@showOrderAdmin')->name('admin.orders.showOrder');
+    Route::post('/admin/orders/{user_id}/{date}', 'OrderController@storeAdmin')->name('admin.orders.store');
     
 
     //Top-Up Route

@@ -55,20 +55,30 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4 pr-1">
+    <div class="col-md-6 pr-1">
         <div class="form-group">
             <label>City</label>
-            <input name="city" type="text" class="form-control" placeholder="City" value="{{$user->city ?? ''}}">
+            <input name="city" type="text" class="form-control" placeholder="eg. Petaling Jaya"
+                value="{{$user->city ?? ''}}">
         </div>
     </div>
-    <div class="col-md-4 px-1">
+    <div class="col-md-6 px-1">
+        <div class="form-group">
+            <label>State</label>
+            <input name="state" type="text" class="form-control" placeholder="eg. Selangor"
+                value="{{$user->state ?? ''}}">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 pr-1">
         <div class="form-group">
             <label>Country</label>
-            <input name="country" type="text" class="form-control" placeholder="Country"
+            <input name="country" type="text" class="form-control" placeholder="eg. Malaysia"
                 value="{{$user->country ?? ''}}">
         </div>
     </div>
-    <div class="col-md-4 pl-1">
+    <div class="col-md-6 pl-1">
         <div class="form-group">
             <label>Postal Code</label>
             <input name="postal" type="number" class="form-control" placeholder="ZIP Code"

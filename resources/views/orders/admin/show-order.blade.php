@@ -31,7 +31,7 @@
             <div class="card-header ">
             </div>
             <div class="card-body ">
-                <form class="form" method="POST" action="{{ route('orders.store', $date) }}">
+                <form class="form" method="POST" action="{{ route('admin.orders.store',[$user_id, $date]) }}">
                     @csrf
                     @method('POST')
                     <div class="row">

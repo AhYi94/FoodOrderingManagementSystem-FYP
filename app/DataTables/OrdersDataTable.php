@@ -3,6 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Order;
+use App\Models\Quota;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Html\Button;
@@ -27,9 +28,19 @@ class OrdersDataTable extends DataTable
                 $actions = '<a href=' . route('admin.orders.showSchedule', $query->id) . ' class="btn btn-info btn-sm mr-1">Order</a>';
                 return $actions;
             })
-            ->filterColumn('address', function($query, $keyword) {
-                $sql = "CONCAT(users.address,'-',users.city)  like ?";
-                $query->whereRaw($sql, ["%{$keyword}%"]);
+
+            ->addColumn('address', function ($query) {
+                return $query->user->address . ", " . $query->user->city . ", " . $query->user->country . ", " . $query->user->postal;
+            })
+
+            ->addIndexColumn()
+
+            ->filterColumn('name', function ($query, $keyword) {
+                $query->whereRaw('name like ?', ["%{$keyword}%"]);
+            })
+
+            ->filterColumn('address', function ($query, $keyword) {
+                $query->whereRaw('CONCAT(address, city, country, postal) like ?', ["%{$keyword}%"]);
             });
     }
 
@@ -39,18 +50,16 @@ class OrdersDataTable extends DataTable
      * @param \App\Order $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query(Quota $quota)
     {
-        $model = User::select([
-            'id',
-            'name',
-            DB::raw("CONCAT(users.address,' ',users.city,' ',users.country) as address"),
-            'email',
-            'created_at',
-            'updated_at',
-        ]);
+        $quota = Quota::leftJoin('users', 'users.id', '=', 'quotas.user_id');
+        // $quota = Quota::join('users', 'users.id', '=', 'quotas.user_id')
+        //     ->select('quotas.*', 'users.address', 'users.name');
+        // $quota = Quota::with('user')->select('[
 
-        return $model;
+        // ]');
+
+        return $quota;
     }
 
     /**
@@ -67,11 +76,8 @@ class OrdersDataTable extends DataTable
             ->dom('Bfrtip')
             ->orderBy(1, 'asc')
             ->buttons(
-                Button::make('create'),
-                Button::make('export'),
+                Button::make('excel'),
                 Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
             );
     }
 
@@ -88,10 +94,12 @@ class OrdersDataTable extends DataTable
                 ->printable(false)
                 ->width(60)
                 ->addClass('text-center'),
-            Column::make('id'),
+            Column::computed('DT_RowIndex')->title('No'),
             Column::make('name'),
-            Column::make('email'),
-            Column::make('address'),
+            Column::make('balance'),
+            Column::computed('address')
+                ->searchable(true),
+
         ];
     }
 

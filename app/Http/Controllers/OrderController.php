@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\DataTables\OrdersDataTable;
 use App\Models\FoodMenu;
 use App\Models\Order;
+use App\Models\Quota;
 use App\Models\Schedule;
+use App\Models\TopUp;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,11 +24,10 @@ class OrderController extends Controller
     {
         $fooditems = FoodMenu::all();
         $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
-        
+
         if (Auth::user()->role == 'user') {
             return view('orders.index', compact('fooditems', 'schedule_items'));
-        }
-        else{
+        } else {
             return abort(404);
         }
     }
@@ -34,10 +35,10 @@ class OrderController extends Controller
     public function indexAdmin(OrdersDataTable $ordersDataTable)
     {
         return $ordersDataTable->render('orders.admin.index');
-        
+
         // $fooditems = FoodMenu::all();
         // $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
-        
+
         // if(Auth::user()->role == 'admin'){
         //     return view('orders.admin.index', compact('fooditems', 'schedule_items'));
         // }
@@ -97,16 +98,46 @@ class OrderController extends Controller
     {
         $fooditems = FoodMenu::all();
         $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
-        return view('orders.admin.show-schedule', compact('fooditems', 'schedule_items','user_id' ));
+        return view('orders.admin.show-schedule', compact('fooditems', 'schedule_items', 'user_id'));
     }
 
     public function showOrderAdmin($user_id, $date)
     {
         $date_orders = Schedule::where('date', $date)->get();
-        return view('orders.show-order', compact('date_orders', 'date', 'user_id'));
+        return view('orders.admin.show-order', compact('date_orders', 'date', 'user_id'));
     }
 
-    
+    public function storeAdmin(Request $request, $user_id, $date)
+    {
+        $i = 0;
+        foreach ($request->quantity as $quantity) {
+            if ($quantity) {
+                $order_data = new Order();
+                $order_data->schedule_date = Schedule::where('date', $date)->pluck('id')[$i];
+                $order_data->user_id = $user_id;
+                $order_data->foodmenu_id = $request->id[$i];
+                $order_data->quantity = $request->quantity[$i];
+                $order_data->save();
+
+                $topup_data = new TopUp;
+                $topup_data->user_id = $user_id;
+                $topup_data->action = "Consume";
+                $topup_data->amount = $request->quantity[$i];
+                $topup_data->save();
+
+                $quota_data = Quota::where('user_id', $user_id)->first();
+                $quota_data->balance -= $request->quantity[$i];
+                $quota_data->updated_at = Carbon::now();
+                $quota_data->save();
+            }
+            $i++;
+        }
+
+        return redirect('/admin/orders')->with(['message' => 'Order successful!', 'alert' => 'success']);
+    }
+
+
+
 
     /**
      * Show the form for editing the specified resource.
