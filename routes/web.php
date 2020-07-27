@@ -46,4 +46,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     //Top-Up Route
     Route::resource('/top-ups', 'TopUpController')->except('store');
+
+    //View Order route
+    Route::get('/view-orders', 'ViewOrderController@index')->name('view-orders.index');
+    Route::get('/view-orders/{date}', 'ViewOrderController@show')->name('view-orders.show');
 });

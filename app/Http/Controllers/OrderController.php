@@ -97,7 +97,7 @@ class OrderController extends Controller
     public function showScheduleAdmin($user_id)
     {
         $fooditems = FoodMenu::all();
-        $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
+        $schedule_items = Schedule::orderBy('date')->get()->where('date', '>=', Carbon::now()->addDay()->toDateString())->groupBy('date');
         return view('orders.admin.show-schedule', compact('fooditems', 'schedule_items', 'user_id'));
     }
 
