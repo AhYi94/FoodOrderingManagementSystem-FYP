@@ -73,7 +73,6 @@ class TopUpController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $topup_data = new TopUp;
         $topup_data->user_id = $id;
         $topup_data->action = "Top-Up";
@@ -84,6 +83,8 @@ class TopUpController extends Controller
         $quota_data->balance += $request->amount;
         $quota_data->updated_at = Carbon::now();
         $quota_data->save();
+
+        return redirect('/top-ups')->with(['message' => 'Order successful!', 'alert' => 'success']);
     }
 
     /**

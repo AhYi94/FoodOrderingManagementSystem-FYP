@@ -23,8 +23,7 @@ class OrderController extends Controller
     public function index()
     {
         $fooditems = FoodMenu::all();
-        $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
-
+        $schedule_items = Schedule::orderBy('date')->get()->where('date', '>=', Carbon::now()->addDay()->toDateString())->groupBy('date');
         if (Auth::user()->role == 'user') {
             return view('orders.index', compact('fooditems', 'schedule_items'));
         } else {
@@ -103,33 +102,60 @@ class OrderController extends Controller
 
     public function showOrderAdmin($user_id, $date)
     {
-        $date_orders = Schedule::where('date', $date)->get();
-        return view('orders.admin.show-order', compact('date_orders', 'date', 'user_id'));
+        $date_orders = Schedule::where('date', $date)->get(); 
+        $date_orders_pluck = Schedule::where('date', $date)->pluck('foodmenu_id'); 
+        $order_quantity = Order::whereIn('schedule_date', $date_orders_pluck)->where('user_id', $user_id)->pluck('quantity');
+        return view('orders.admin.show-order', compact('date_orders', 'date', 'user_id', 'order_quantity'));
     }
 
     public function storeAdmin(Request $request, $user_id, $date)
     {
+
+        $user_data = Order::where('user_id', $user_id)->first();
+
+
         $i = 0;
         foreach ($request->quantity as $quantity) {
             if ($quantity) {
-                $order_data = new Order();
-                $order_data->schedule_date = Schedule::where('date', $date)->pluck('id')[$i];
-                $order_data->user_id = $user_id;
-                $order_data->foodmenu_id = $request->id[$i];
-                $order_data->quantity = $request->quantity[$i];
-                $order_data->save();
+                if ($user_data) {
+                    $order_data = Order::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i]);
 
-                $topup_data = new TopUp;
-                $topup_data->user_id = $user_id;
-                $topup_data->action = "Consume";
-                $topup_data->amount = $request->quantity[$i];
-                $topup_data->save();
+                    $abc = Order::where('user_id', $user_id)->pluck('topup_id');
+                    $topup_data = TopUp::where('user_id', $user_id)->where('id', $abc[$i]);
+                    $quota_data = Quota::where('user_id', $user_id)->first();
 
-                $quota_data = Quota::where('user_id', $user_id)->first();
-                $quota_data->balance -= $request->quantity[$i];
-                $quota_data->updated_at = Carbon::now();
-                $quota_data->save();
+                    $total = $topup_data->first()->amount - $request->quantity[$i];
+                    $net_total = $quota_data->balance + $total;
+
+                    $order_data->update(['quantity' => $request->quantity[$i]]);
+                    $topup_data->update(['amount' => $request->quantity[$i]]);
+                    $quota_data->update(['balance' => $net_total]);
+                    //    Quota::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i])
+                    //    ->update(['quantity'=> $request->quantity[$i]]);
+                } else {
+
+                    $topup_data = new TopUp;
+                    $topup_data->user_id = $user_id;
+                    $topup_data->action = "Consume";
+                    $topup_data->amount = $request->quantity[$i];
+                    $topup_data->save();
+
+                    $order_data = new Order();
+                    $order_data->schedule_date = Schedule::where('date', $date)->pluck('id')[$i];
+                    $order_data->user_id = $user_id;
+                    $order_data->foodmenu_id = $request->id[$i];
+                    $order_data->quantity = $request->quantity[$i];
+                    $order_data->topup_id = $topup_data->id;
+                    $order_data->save();
+
+
+                    $quota_data = Quota::where('user_id', $user_id)->first();
+                    $quota_data->balance -= $request->quantity[$i];
+                    $quota_data->updated_at = Carbon::now();
+                    $quota_data->save();
+                }
             }
+
             $i++;
         }
 

@@ -76,6 +76,7 @@
                     </div>
                 </div>
                 <ul class="nav">
+                    @if (Auth::user()->role == 'admin')
                     <li class="nav-item ">
                         <a class="nav-link" href="{{route('dashboard')}}">
                             <i class="nc-icon nc-chart-pie-35"></i>
@@ -100,21 +101,12 @@
                             <p>Ordering Schedule</p>
                         </a>
                     </li>
-                    @if (Auth::user()->role == 'admin')
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('admin.orders.index') }}">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>Order</p>
                         </a>
                     </li> 
-                    @else
-                    <li class="nav-item ">
-                        <a class="nav-link" href="{{ route('orders.index') }}">
-                            <i class="nc-icon nc-circle-09"></i>
-                            <p>Order</p>
-                        </a>
-                    </li>
-                    @endif
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('top-ups.index') }}">
                             <i class="nc-icon nc-circle-09"></i>
@@ -127,6 +119,14 @@
                             <p>View Orders</p>
                         </a>
                     </li> 
+                    @else
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('orders.index') }}">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Order</p>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </div>
         </div>

@@ -16,43 +16,25 @@
                                 <th>Name</th>
                                 <th>Address</th>
                                 @foreach ($food_data as $food_name)
-                                    <th>{{$food_name->food->name}}</th>
+                                <th>{{$food_name}}</th>
                                 @endforeach
+
                             </thead>
                             <tbody>
-                                {{-- Group by : 1, 12 collection --}}
-                                {{-- $user_id_index get user_id --}}
-                                {{-- user_id_value collection of user_id--}}
-                                @foreach ($orders_data as $user_id_index => $user_id_value)
-                                {{$user_id_value}}
-                                    <tr>
-                                        @if ($user_id_index)
-                                            @php
-                                                $user = \App\Models\User::find($user_id_index)
-                                            @endphp
-                                                <td>{{$user->id}}</td>
-                                                <td>{{$user->name}}</td>
-                                                <td>{{$user->address}}</td>
-
-                                            {{-- $user_id_value get Order id --}}
-                                            @foreach ($user_id_value as $index)
-                                            
-                                                @foreach ($food_data as $value)
-                                                
-                                                    @if ($index->foodmenu_id == $value->foodmenu_id)
-                                                        <td>{{$index->quantity}}</td>
-                                                    @elseif($value->quantity == 0)
-                                                    <td>0</td>
-                                                    @endif
-                                                @endforeach
-                                            @endforeach
-                                        @endif
-                                        {{-- <td>{{$users->user->id}}</td> --}}
-                                        {{-- <td>{{$users->user->address . " " .$users->user->city}}</td> --}}
-                                        {{-- <td>{{$users->foodmenu_id}}</td> --}}
-                                    </tr>
+                                {{$order_data}}
+                                @foreach($order_data as $order_datas)
+                                <tr>
+                                    <td>{{$order_datas[0]->user->id}}</td>
+                                    <td>{{$order_datas[0]->user->name}}</td>
+                                    <td>{{$order_datas[0]->user->address}}</td>
+                                    @foreach ($order_datas as $item)
+                                    <td>{{$item->quantity}}</td>
+                                    @endforeach
+                                </tr>
                                 @endforeach
-
+                                {{-- <td>{{$order_data[0]->quantity}}</td>
+                                <td>{{$order_data[1]->quantity}}</td>
+                                <td>{{$order_data[2]->quantity}}</td> --}}
                             </tbody>
                         </table>
                     </div>

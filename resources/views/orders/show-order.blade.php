@@ -43,7 +43,7 @@
                             <input type="number" class="form-control d-none" name="id[]"
                                 value="{{$date_order->food->id}}" />
                             <p class="card-category">Quanity</p>
-                            <input type="number" class="form-control" name="quantity[]" />
+                            <input type="number" class="form-control" name="quantity[]"/>
                         </div>
                         @endforeach
                     </div>
