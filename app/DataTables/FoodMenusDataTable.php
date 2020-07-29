@@ -33,7 +33,7 @@ class FoodMenusDataTable extends DataTable
                 return $query->updated_at->format('d.m.Y');
             })
             ->editColumn('image', function ($query) {
-                return '<img src="storage/' . $query->image . '" border="0" width="100%" class="img-rounded" align="center" />';
+                return '<img src="storage/' . $query->image . '" border="0" width="50%" class="img-rounded" align="center" />';
             })->rawColumns(['image', 'action']);
     }
     /**
@@ -71,10 +71,8 @@ class FoodMenusDataTable extends DataTable
             ->orderBy(1)
             ->buttons(
                 Button::make('create'),
-                Button::make('export'),
+                Button::make('excel'),
                 Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
             );
     }
 
