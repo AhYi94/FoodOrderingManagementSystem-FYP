@@ -103,7 +103,7 @@ class OrderController extends Controller
     public function showOrderAdmin($user_id, $date)
     {
         $date_orders = Schedule::where('date', $date)->get(); 
-        $date_orders_pluck = Schedule::where('date', $date)->pluck('foodmenu_id'); 
+        $date_orders_pluck = Schedule::where('date', $date)->pluck('id'); 
         $order_quantity = Order::whereIn('schedule_date', $date_orders_pluck)->where('user_id', $user_id)->pluck('quantity');
         return view('orders.admin.show-order', compact('date_orders', 'date', 'user_id', 'order_quantity'));
     }
@@ -112,12 +112,12 @@ class OrderController extends Controller
     {
 
         $user_data = Order::where('user_id', $user_id)->first();
-
-
+        $get_date = Schedule::where('date', $date)->pluck('id');
+        $order_date = Order::whereIn('schedule_date', $get_date)->where('user_id', $user_id)->get(['schedule_date']);
         $i = 0;
         foreach ($request->quantity as $quantity) {
-            if ($quantity) {
-                if ($user_data) {
+            
+                if (!is_null($order_date->first()) && $user_data) {
                     $order_data = Order::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i]);
 
                     $abc = Order::where('user_id', $user_id)->pluck('topup_id');
@@ -154,7 +154,7 @@ class OrderController extends Controller
                     $quota_data->updated_at = Carbon::now();
                     $quota_data->save();
                 }
-            }
+            
 
             $i++;
         }

@@ -16,8 +16,6 @@ class CreateSchedulesTable extends Migration
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->time('start_time');
-            $table->time('end_time');
             $table->unsignedBigInteger('foodmenu_id');
             $table->foreign('foodmenu_id')->references('id')->on('food_menus');
             $table->timestamps();

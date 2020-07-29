@@ -30,7 +30,7 @@ class OrdersDataTable extends DataTable
             })
 
             ->addColumn('address', function ($query) {
-                return $query->user->address . ", " . $query->user->city . ", " . $query->user->country . ", " . $query->user->postal;
+                return $query->user->address . " " . $query->user->city . " " . $query->user->country . " " . $query->user->postal;
             })
 
             ->addIndexColumn()

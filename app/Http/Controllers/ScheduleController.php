@@ -27,10 +27,6 @@ class ScheduleController extends Controller
     {
         $fooditems = FoodMenu::all();
         $schedule_items = Schedule::all();
-        // Backup
-        // $schedule_items = Schedule::pluck('foodmenu_id');
-        // $schedule_itemstest = FoodMenu::whereIn('id', $schedule_items)->get();
-        // return $schedule_itemstest;
         return view('schedules.create', compact('fooditems', 'schedule_items'));
     }
 
@@ -47,15 +43,11 @@ class ScheduleController extends Controller
         foreach ($fooditems as $fooditem) {
             $schedule_data = new Schedule();
             $schedule_data->date = date('Y-m-d', strtotime($request->input('date')));
-            $schedule_data->start_time = date("H:i", strtotime($request->input('start_time')));
-            $schedule_data->end_time = date("H:i", strtotime($request->input('end_time')));
-
 
             $schedule_data->foodmenu_id = $fooditem;
             $schedule_data->save();
         }
         return redirect('schedules/create')->with(['message' => 'Schedule created!', 'alert' => 'success']);
-        // return $request->get('fooditem');
     }
 
     /**
