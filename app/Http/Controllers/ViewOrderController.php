@@ -42,10 +42,8 @@ class ViewOrderController extends Controller
         ->whereIn('orders.user_id', $get_user_id_by_date)
         ->whereIn('orders.foodmenu_id', $get_foodmenu_id_by_date)
         ->where('schedules.date' ,'=' ,$date)
-        ->get()->groupBy('user_id');
-
-        // return $order_data;
-
+        ->orderBy('user_id')->get()->groupBy('user_id');
+        
 // foreach ($order_data as $order_datas) {
 //     return $abc[] = $order_datas;
 // }

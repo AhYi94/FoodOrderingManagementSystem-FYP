@@ -64,19 +64,51 @@ class OrderController extends Controller
      */
     public function store(Request $request, $date)
     {
+        $user_data = Order::where('user_id', Auth::user()->id)->first();
+        $get_date = Schedule::where('date', $date)->pluck('id');
+        $order_date = Order::whereIn('schedule_date', $get_date)->where('user_id', Auth::user()->id)->get(['schedule_date']);
         $i = 0;
         foreach ($request->quantity as $quantity) {
-            if ($quantity) {
+
+            if (!is_null($order_date->first()) && $user_data) {
+                $order_data = Order::where('user_id', Auth::user()->id)->where('foodmenu_id', $request->id[$i]);
+
+                $topup_id = Order::where('user_id', Auth::user()->id)->pluck('topup_id');
+                $topup_data = TopUp::where('user_id', Auth::user()->id)->where('id', $topup_id[$i]);
+                $quota_data = Quota::where('user_id', Auth::user()->id)->first();
+
+                $total = $topup_data->first()->amount - $request->quantity[$i];
+                $net_total = $quota_data->balance + $total;
+
+                $order_data->update(['quantity' => $request->quantity[$i]]);
+                $topup_data->update(['amount' => $request->quantity[$i]]);
+                $quota_data->update(['balance' => $net_total]);
+                //    Quota::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i])
+                //    ->update(['quantity'=> $request->quantity[$i]]);
+            } else {
+
+                $topup_data = new TopUp;
+                $topup_data->user_id = Auth::user()->id;
+                $topup_data->action = "Consume";
+                $topup_data->amount = $request->quantity[$i];
+                $topup_data->save();
+
                 $order_data = new Order();
                 $order_data->schedule_date = Schedule::where('date', $date)->pluck('id')[$i];
                 $order_data->user_id = Auth::user()->id;
                 $order_data->foodmenu_id = $request->id[$i];
                 $order_data->quantity = $request->quantity[$i];
+                $order_data->topup_id = $topup_data->id;
                 $order_data->save();
+
+
+                $quota_data = Quota::where('user_id', Auth::user()->id)->first();
+                $quota_data->balance -= $request->quantity[$i];
+                $quota_data->updated_at = Carbon::now();
+                $quota_data->save();
             }
             $i++;
         }
-
         return redirect('orders')->with(['message' => 'Order successful!', 'alert' => 'success']);
     }
 
@@ -102,8 +134,8 @@ class OrderController extends Controller
 
     public function showOrderAdmin($user_id, $date)
     {
-        $date_orders = Schedule::where('date', $date)->get(); 
-        $date_orders_pluck = Schedule::where('date', $date)->pluck('id'); 
+        $date_orders = Schedule::where('date', $date)->get();
+        $date_orders_pluck = Schedule::where('date', $date)->pluck('id');
         $order_quantity = Order::whereIn('schedule_date', $date_orders_pluck)->where('user_id', $user_id)->pluck('quantity');
         return view('orders.admin.show-order', compact('date_orders', 'date', 'user_id', 'order_quantity'));
     }
@@ -116,45 +148,45 @@ class OrderController extends Controller
         $order_date = Order::whereIn('schedule_date', $get_date)->where('user_id', $user_id)->get(['schedule_date']);
         $i = 0;
         foreach ($request->quantity as $quantity) {
-            
-                if (!is_null($order_date->first()) && $user_data) {
-                    $order_data = Order::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i]);
 
-                    $abc = Order::where('user_id', $user_id)->pluck('topup_id');
-                    $topup_data = TopUp::where('user_id', $user_id)->where('id', $abc[$i]);
-                    $quota_data = Quota::where('user_id', $user_id)->first();
+            if (!is_null($order_date->first()) && $user_data) {
+                $order_data = Order::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i]);
 
-                    $total = $topup_data->first()->amount - $request->quantity[$i];
-                    $net_total = $quota_data->balance + $total;
+                $topup_id = Order::where('user_id', $user_id)->pluck('topup_id');
+                $topup_data = TopUp::where('user_id', $user_id)->where('id', $topup_id[$i]);
+                $quota_data = Quota::where('user_id', $user_id)->first();
 
-                    $order_data->update(['quantity' => $request->quantity[$i]]);
-                    $topup_data->update(['amount' => $request->quantity[$i]]);
-                    $quota_data->update(['balance' => $net_total]);
-                    //    Quota::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i])
-                    //    ->update(['quantity'=> $request->quantity[$i]]);
-                } else {
+                $total = $topup_data->first()->amount - $request->quantity[$i];
+                $net_total = $quota_data->balance + $total;
 
-                    $topup_data = new TopUp;
-                    $topup_data->user_id = $user_id;
-                    $topup_data->action = "Consume";
-                    $topup_data->amount = $request->quantity[$i];
-                    $topup_data->save();
+                $order_data->update(['quantity' => $request->quantity[$i]]);
+                $topup_data->update(['amount' => $request->quantity[$i]]);
+                $quota_data->update(['balance' => $net_total]);
+                //    Quota::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i])
+                //    ->update(['quantity'=> $request->quantity[$i]]);
+            } else {
 
-                    $order_data = new Order();
-                    $order_data->schedule_date = Schedule::where('date', $date)->pluck('id')[$i];
-                    $order_data->user_id = $user_id;
-                    $order_data->foodmenu_id = $request->id[$i];
-                    $order_data->quantity = $request->quantity[$i];
-                    $order_data->topup_id = $topup_data->id;
-                    $order_data->save();
+                $topup_data = new TopUp;
+                $topup_data->user_id = $user_id;
+                $topup_data->action = "Consume";
+                $topup_data->amount = $request->quantity[$i];
+                $topup_data->save();
+
+                $order_data = new Order();
+                $order_data->schedule_date = Schedule::where('date', $date)->pluck('id')[$i];
+                $order_data->user_id = $user_id;
+                $order_data->foodmenu_id = $request->id[$i];
+                $order_data->quantity = $request->quantity[$i];
+                $order_data->topup_id = $topup_data->id;
+                $order_data->save();
 
 
-                    $quota_data = Quota::where('user_id', $user_id)->first();
-                    $quota_data->balance -= $request->quantity[$i];
-                    $quota_data->updated_at = Carbon::now();
-                    $quota_data->save();
-                }
-            
+                $quota_data = Quota::where('user_id', $user_id)->first();
+                $quota_data->balance -= $request->quantity[$i];
+                $quota_data->updated_at = Carbon::now();
+                $quota_data->save();
+            }
+
 
             $i++;
         }

@@ -92,7 +92,7 @@
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('schedules.create') }}">
                             <i class="nc-icon nc-circle-09"></i>
-                            <p>Ordering Schedule</p>
+                            <p>Schedule</p>
                         </a>
                     </li>
                     <li class="nav-item ">
