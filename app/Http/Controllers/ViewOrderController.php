@@ -20,7 +20,6 @@ class ViewOrderController extends Controller
         $orders_data = Order::whereIn('schedule_date', $user_orders_data)->get()->groupBy('user_id');
         $schedule = Schedule::where('date', $date)->get();
 
-
         //Food Name by Date
         $schedule_id_byDate = Schedule::where('date', $date)->pluck('foodmenu_id');
         $food_data = FoodMenu::whereIn('id', $schedule_id_byDate)->pluck('name');
@@ -43,7 +42,7 @@ class ViewOrderController extends Controller
         ->whereIn('orders.foodmenu_id', $get_foodmenu_id_by_date)
         ->where('schedules.date' ,'=' ,$date)
         ->orderBy('user_id')->get()->groupBy('user_id');
-        
+
 // foreach ($order_data as $order_datas) {
 //     return $abc[] = $order_datas;
 // }

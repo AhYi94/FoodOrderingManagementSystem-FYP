@@ -17,8 +17,8 @@ class TopUpController extends Controller
      */
     public function index(QuotasDataTable $dataTable)
     {
-        $user = \Auth::user();
-        return $dataTable->render('top-ups.index', compact('user'));
+
+        return $dataTable->render('top-ups.index');
     }
 
     /**

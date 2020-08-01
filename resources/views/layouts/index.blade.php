@@ -91,19 +91,19 @@
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('schedules.create') }}">
-                            <i class="nc-icon nc-circle-09"></i>
+                            <i class="nc-icon nc-watch-time"></i>
                             <p>Schedule</p>
                         </a>
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('admin.orders.index') }}">
-                            <i class="nc-icon nc-circle-09"></i>
+                            <i class="nc-icon nc-bullet-list-67"></i>
                             <p>Order</p>
                         </a>
                     </li> 
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('view-orders.index') }}">
-                            <i class="nc-icon nc-circle-09"></i>
+                            <i class="nc-icon nc-paper-2"></i>
                             <p>View Orders</p>
                         </a>
                     </li>
@@ -115,7 +115,7 @@
                     </li>
                     <li class="nav-item ">
                         <a class="nav-link" href="{{ route('top-ups.index') }}">
-                            <i class="nc-icon nc-circle-09"></i>
+                            <i class="nc-icon nc-credit-card"></i>
                             <p>Top-Up</p>
                         </a>
                     </li> 
