@@ -83,9 +83,10 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($username)
     {
-        //
+        $user_data = User::where('name', $username)->first();
+        return view('users.view', compact('user_data'));
     }
 
     /**
@@ -137,6 +138,6 @@ class UserController extends Controller
     {
         $user_data = User::find($user->id);
         $user_data->delete();
-        return redirect('users')->with(['message' => 'User deleted!', 'alert' => 'success']);
+        
     }
 }

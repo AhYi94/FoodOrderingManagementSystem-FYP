@@ -17,11 +17,7 @@
     <link href="/assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/assets/css/demo.css" rel="stylesheet" />
-    <style>
-        /* #user-table_wrapper{
-            display: flex;
-        } */
-    </style>
+    @stack('styles')
 </head>
 
 <body>
@@ -54,7 +50,7 @@
                         <div class="collapse" id="collapseExample">
                             <ul class="nav">
                                 <li>
-                                    <a class="profile-dropdown" href="#pablo">
+                                    <a class="profile-dropdown" href="{{ route('users.show', Auth::user()->name) }}">
                                         <span class="sidebar-mini">MP</span>
                                         <span class="sidebar-normal">My Profile</span>
                                     </a>
@@ -63,12 +59,6 @@
                                     <a class="profile-dropdown" href="{{ route('users.edit', Auth::user()->id) }}">
                                         <span class="sidebar-mini">EP</span>
                                         <span class="sidebar-normal">Edit Profile</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="profile-dropdown" href="#pablo">
-                                        <span class="sidebar-mini">S</span>
-                                        <span class="sidebar-normal">Settings</span>
                                     </a>
                                 </li>
                             </ul>

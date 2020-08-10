@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'address', 'city', 'state' ,'country', 'postal'
+        'name', 'email', 'password', 'role', 'address', 'city', 'state', 'country', 'postal'
     ];
 
     /**
@@ -43,4 +43,5 @@ class User extends Authenticatable
     {
         return $date->format('Y-m-d H:i:s');
     }
+
 }

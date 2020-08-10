@@ -24,8 +24,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
     //User Route
-    Route::resource('/users', 'UserController')->except('destroy');
-    Route::get('/users/{user}', 'UserController@destroy')->name('users.destroy');
+    Route::resource('/users', 'UserController');
 
     //Food Menu Route
     Route::resource('/food-menus', 'FoodMenuController')->except('destroy');

@@ -23,7 +23,8 @@ class UserDataTable extends DataTable
             ->eloquent($query)
             ->addColumn('action', function ($query) {
                 $actions = '<a href=' . route('users.edit', $query) . ' class="btn btn-info btn-sm mr-1">Edit</a>';
-                $actions .=  '<a href=' . route('users.destroy', $query) . ' onclick="return confirm(\'Are you sure you want to delete this user?\');" class="btn btn-danger btn-sm">Delete</a>';
+                // $actions .=  '<button data-remote="users/'. $query->id.'" class="btn btn-danger btn-sm delete btn-delete">Delete</button>';
+                $actions .=  '<button class="btn btn-delete" data-id-variable="/users/' . $query->id . '">Delete</button>';
                 return $actions;
             })
             ->editColumn('created_at', function ($query) {
