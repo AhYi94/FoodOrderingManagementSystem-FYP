@@ -43,32 +43,6 @@ class ViewOrderController extends Controller
         ->where('schedules.date' ,'=' ,$date)
         ->orderBy('user_id')->get()->groupBy('user_id');
 
-// foreach ($order_data as $order_datas) {
-//     return $abc[] = $order_datas;
-// }
-
-
-        // $order_data = Order::join('schedules', 'orders.schedule_date', '=', 'schedules.id')
-        // ->select('orders.*', 'schedules.date')
-        // ->where('orders.user_id', 1)
-        // ->where('orders.foodmenu_id', 1)
-        // ->where('schedules.date' ,'=' ,$date)
-        // ->get();
-        // return $order_data;
-
-        // $order_data = \DB::table('orders')->join('schedules', 'orders.schedule_date', '=', 'schedules.id')->select('orders.*', 'schedules.date')->where('orders.user_id', '1')->where('orders.foodmenu_id', '2')->where('schedules.date' , $date)->sum('quantity');
-        // return  $order_data;
-        // foreach($order_user_id as $items){
-        //     return $items->quantity;
-        // }
-
-
-        
-        // $order_foodmenu_id = Order::where('foodmenu_id', $food_id)->where('schedule_date', )->get();
-        // return $order_foodmenu_id;
-        // $schedule_foodMenuId_by_date;
-        // $order_foodMenuId_By_schedule_date;
-
         return view('view-orders.show', compact('orders_data', 'schedule', 'date', 'food_data', 'order_data', 'get_user_id_by_date', 'get_foodmenu_id_by_date'));
     }
 }

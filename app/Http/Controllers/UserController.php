@@ -22,18 +22,6 @@ class UserController extends Controller
     {
         $user = \Auth::user();
         return $dataTable->render('users.index', compact('user'));
-        
-        //// Check time is between
-        // $time = Carbon::now(); // Current time
-        // $start = Carbon::create($time->year, $time->month, $time->day, 7, 0, 0); //set time to 10:00
-        // $end = Carbon::create($time->year, $time->month, $time->day, 24, 0, 0); //set time to 18:00
-
-        // if(now() < $end && now() > $start){
-        //     return 'time between';
-        // }
-        // else{
-        //     return 'not now';
-        // }
     }
 
     /**
