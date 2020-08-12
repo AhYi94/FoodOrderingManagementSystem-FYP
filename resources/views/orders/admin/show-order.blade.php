@@ -36,8 +36,8 @@
                     @method('POST')
                     <div class="row">
                         @php
-                                $i=0
-                            @endphp
+                        $i=0
+                        @endphp
                         @foreach ($date_orders as $date_order)
                         <div class="form-group col-3">
                             <h4 class="card-title text-center">{{$date_order->food->name}}</h4>
@@ -46,10 +46,11 @@
                             <input type="number" class="form-control d-none" name="id[]"
                                 value="{{$date_order->food->id}}" />
                             <p class="card-category">Quanity</p>
-                            
-                            <input type="number" class="form-control" name="quantity[]" value="{{$order_quantity[$i] ?? 0}}" />
+
+                            <input type="number" class="form-control" name="quantity[]"
+                                value="{{$order_quantity[$i] ?? 0}}" />
                             @php
-                                $i++
+                            $i++
                             @endphp
                         </div>
                         @endforeach
@@ -60,7 +61,7 @@
                     </div>
                 </form>
             </div>
-            
+
         </div>
     </div>
 

@@ -85,7 +85,15 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        if(Auth::user()->role == 'admin'){
+            return view('users.edit', compact('user'));
+        }
+        else if ($user->id == Auth::user()->id) {
+            return view('users.edit', compact('user'));
+        }
+        else{
+            abort('404');
+        }
     }
 
     /**
@@ -126,6 +134,5 @@ class UserController extends Controller
     {
         $user_data = User::find($user->id);
         $user_data->delete();
-        
     }
 }
