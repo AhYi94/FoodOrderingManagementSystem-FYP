@@ -46,8 +46,7 @@
                             <input type="number" class="form-control d-none" name="id[]"
                                 value="{{$date_order->food->id}}" />
                             <p class="card-category">Quanity</p>
-
-                            <input type="number" class="form-control" name="quantity[]"
+                            <input type="number" class="form-control input-quantity" name="quantity[]"
                                 value="{{$order_quantity[$i] ?? 0}}" />
                             @php
                             $i++
@@ -57,7 +56,7 @@
                     </div>
 
                     <div class="card-footer ">
-                        <button type="submit" class="btn btn-fill btn-info">Submit</button>
+                        <button type="submit" class="btn btn-fill btn-info submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -67,14 +66,36 @@
 
 </div>
 </div>
-
-
-
-
 @endsection
 
 
 @push('scripts')
+<script>
+    var total_quantity = 0;
+    var before_get_array_value =  $("input[name='quantity[]']").map(function(){return total_quantity += parseInt($(this).val());}).get();
+
+    
+$('form').submit(function(e) {
+    var total_quantity1 = 0;
+    var balance = parseInt("{{$quota_data->balance}}");
+    var after_get_array_value =  $("input[name='quantity[]']").map(function(){return total_quantity1 += parseInt($(this).val());}).get();
+    var quantity_difference = parseInt(before_get_array_value) - parseInt(after_get_array_value);
+    var net_balance = balance + quantity_difference;
+    if(net_balance < 0){
+        if ( confirm("The order exceed the balance. Are you sure you want to Order?") ) {
+           return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+});
+
+// if($quota_data->quantity < 0){
+//     alert('Not Enought!');
+// }
+</script>
 
 
 @endpush

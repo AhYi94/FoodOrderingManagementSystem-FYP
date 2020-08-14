@@ -24,7 +24,7 @@ class UserDataTable extends DataTable
             ->addColumn('action', function ($query) {
                 $actions = '<a href=' . route('users.edit', $query) . ' class="btn btn-info btn-sm mr-1">Edit</a>';
                 // $actions .=  '<button data-remote="users/'. $query->id.'" class="btn btn-danger btn-sm delete btn-delete">Delete</button>';
-                $actions .=  '<button class="btn btn-delete" data-id-variable="/users/' . $query->id . '">Delete</button>';
+                $actions .=  '<button class="btn btn-danger btn-sm delete btn-delete" data-id-variable="/users/' . $query->id . '" >Delete</button>';
                 return $actions;
             })
             ->editColumn('created_at', function ($query) {

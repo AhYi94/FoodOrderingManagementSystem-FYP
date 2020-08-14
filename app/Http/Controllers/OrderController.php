@@ -139,7 +139,8 @@ class OrderController extends Controller
         $date_orders = Schedule::where('date', $date)->get();
         $date_orders_pluck = Schedule::where('date', $date)->pluck('id');
         $order_quantity = Order::whereIn('schedule_date', $date_orders_pluck)->where('user_id', $user_id)->pluck('quantity');
-        return view('orders.admin.show-order', compact('date_orders', 'date', 'user_id', 'order_quantity'));
+        $quota_data = Quota::where('user_id', $user_id)->first();
+        return view('orders.admin.show-order', compact('date_orders', 'date', 'user_id', 'order_quantity', 'quota_data'));
     }
 
     public function storeAdmin(Request $request, $user_id, $date)
