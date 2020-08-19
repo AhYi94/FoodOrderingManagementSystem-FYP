@@ -16,4 +16,29 @@
 @push('scripts')
 
 {{$dataTable->scripts()}}
+
+<script>
+    $('#foodmenus-table').on('click', '.btn-delete', function (e) { 
+        if(confirm("Are you sure want to delete?")){
+            var token = '{{ csrf_token() }}';
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            });
+            var url = $(this).data('id-variable');
+            // confirm then
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                dataType: 'json',
+                data: {method: '_DELETE', submit: true}
+            }).always(function (data) {
+                $('#foodmenus-table').DataTable().draw(false);
+            });
+        }
+    });
+</script>
 @endpush

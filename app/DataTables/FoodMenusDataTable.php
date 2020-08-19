@@ -23,7 +23,8 @@ class FoodMenusDataTable extends DataTable
             ->eloquent($query)
             ->addColumn('action', function ($query) {
                 $actions = '<a href=' . route('food-menus.edit', $query) . ' class="btn btn-info btn-sm mr-1">Edit</a>';
-                $actions .=  '<a href=' . route('food-menus.destroy', $query) . ' onclick="return confirm(\'Are you sure you want to delete this user?\');" class="btn btn-danger btn-sm">Delete</a>';
+                // $actions .=  '<a href=' . route('food-menus.destroy', $query) . ' onclick="return confirm(\'Are you sure you want to delete this user?\');" class="btn btn-danger btn-sm">Delete</a>';
+                $actions .=  '<button class="btn btn-danger btn-sm delete btn-delete" data-id-variable="/food-menus/' . $query->id . '" >Delete</button>';
                 return $actions;
             })
             ->editColumn('created_at', function ($query) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\FoodMenusDataTable;
 use App\Models\FoodMenu;
+use App\Models\Schedule;
 use Carbon\Carbon;
 use Carbon\Traits\Timestamp;
 use Illuminate\Http\Request;
@@ -115,6 +116,9 @@ class FoodMenuController extends Controller
      */
     public function destroy(FoodMenu $foodMenu)
     {
-        //
+        $food_data = FoodMenu::find($foodMenu->id);
+        $food_data->delete();
+        $schedule_data = Schedule::where('foodmenu_id', $foodMenu->id);
+        $schedule_data->delete();
     }
 }

@@ -22,7 +22,7 @@ class ViewOrderController extends Controller
 
         //Food Name by Date
         $schedule_id_byDate = Schedule::where('date', $date)->pluck('foodmenu_id');
-        $food_data = FoodMenu::whereIn('id', $schedule_id_byDate)->pluck('name');
+        $food_data = FoodMenu::withTrashed()->whereIn('id', $schedule_id_byDate)->pluck('name');
 
         $order_userId = Order::all()->pluck('user_id')->unique();
         $abc = array_values($order_userId->toArray());     

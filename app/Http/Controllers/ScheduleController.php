@@ -39,6 +39,11 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
 
+        $validatedData = $request->validate([
+            'date' => 'required',
+            'fooditem' => 'required',
+        ]);
+
         $fooditems = $request->input('fooditem');
         foreach ($fooditems as $fooditem) {
             $schedule_data = new Schedule();

@@ -7,8 +7,10 @@ use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\DataTables\UserDataTable;
 use App\Models\Quota;
+use App\Models\TopUp;
 use App\Models\User;
 
 class UserController extends Controller
@@ -46,9 +48,7 @@ class UserController extends Controller
             'email' => 'required|unique:users|max:255',
             'name' => 'required',
             'password' => 'required|confirmed',
-            'password_confirmation' => 'required_with:password',
         ]);
-
 
         $user_data = new User;
         $input = $request->except('password');
@@ -134,5 +134,9 @@ class UserController extends Controller
     {
         $user_data = User::find($user->id);
         $user_data->delete();
+        $user_quota_data = Quota::where('user_id', $user->id);
+        $user_quota_data->delete();
+        $user_topup_data = TopUp::where('user_id', $user->id);
+        $user_topup_data->delete();
     }
 }

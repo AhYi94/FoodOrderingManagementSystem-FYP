@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/admin/orders/{user_id}/{date}', 'OrderController@storeAdmin')->name('admin.orders.store');
 
         //Food Menu Route
-        Route::resource('/food-menus', 'FoodMenuController')->except('destroy');
+        Route::resource('/food-menus', 'FoodMenuController');
         Route::get('/food-menus/{food-menu}', 'FoodMenuController@destroy')->name('food-menus.destroy');
 
         //Schedule Route

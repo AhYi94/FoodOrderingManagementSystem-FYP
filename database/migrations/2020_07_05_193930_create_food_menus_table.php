@@ -18,6 +18,7 @@ class CreateFoodMenusTable extends Migration
             $table->string('name');
             $table->string('image');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

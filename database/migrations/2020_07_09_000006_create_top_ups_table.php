@@ -17,9 +17,12 @@ class CreateTopUpsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('schedule_id')->nullable();
+            $table->foreign('schedule_id')->references('id')->on('schedules');
             $table->string('action');
             $table->integer('amount');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

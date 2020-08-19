@@ -1,13 +1,3 @@
-@if ($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-        @endforeach
-    </ul>
-</div>
-@endif
-
 <div class="row">
     <div class="col-md-12 ">
         <div class="form-group">
@@ -25,6 +15,9 @@
         <div class="form-group">
             <label>Password</label>
             <input name="password" type="password" class="form-control" placeholder="Password" value="">
+            @error('password')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
     </div>
 </div>
@@ -41,6 +34,9 @@
         <div class="form-group">
             <label>Name</label>
             <input name="name" type="text" class="form-control" placeholder="Full Name" value="{{$user->name ?? ''}}">
+            @error('name')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
         </div>
     </div>
 </div>

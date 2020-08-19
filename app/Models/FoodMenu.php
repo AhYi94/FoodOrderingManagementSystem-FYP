@@ -4,9 +4,11 @@ namespace App\Models;
 
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FoodMenu extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'name','image'
     ];

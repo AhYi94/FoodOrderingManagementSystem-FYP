@@ -71,8 +71,7 @@ class OrderController extends Controller
         foreach ($request->quantity as $quantity) {
 
             if (!is_null($order_date->first()) && $user_data) {
-                $order_data = Order::where('user_id', Auth::user()->id)->where('foodmenu_id', $request->id[$i]);
-
+                $order_data = Order::where('user_id', Auth::user()->id)->where('foodmenu_id', $request->id[$i])->where('schedule_date', $get_date);
                 $topup_id = Order::where('user_id', Auth::user()->id)->pluck('topup_id');
                 $topup_data = TopUp::where('user_id', Auth::user()->id)->where('id', $topup_id[$i]);
                 $quota_data = Quota::where('user_id', Auth::user()->id)->first();
@@ -148,18 +147,19 @@ class OrderController extends Controller
 
         $user_data = Order::where('user_id', $user_id)->first();
         $get_date = Schedule::where('date', $date)->pluck('id');
+  
         $order_date = Order::whereIn('schedule_date', $get_date)->where('user_id', $user_id)->get(['schedule_date']);
         $i = 0;
         foreach ($request->quantity as $quantity) {
 
             if (!is_null($order_date->first()) && $user_data) {
-                $order_data = Order::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i]);
-
+                $order_data = Order::where('user_id', Auth::user()->id)->where('foodmenu_id', $request->id[$i])->whereIn('schedule_date', $get_date);
                 $topup_id = Order::where('user_id', $user_id)->pluck('topup_id');
-                $topup_data = TopUp::where('user_id', $user_id)->where('id', $topup_id[$i]);
+                $topup_datas = TopUp::where('user_id', $user_id)->whereIn('id', $topup_id)->whereIn('schedule_id', $get_date)->get();
+                $topup_data = TopUp::where('id', $topup_datas[$i]->id);
                 $quota_data = Quota::where('user_id', $user_id)->first();
-
-                $total = $topup_data->first()->amount - $request->quantity[$i];
+                
+                $total = $topup_datas[$i]->amount - $request->quantity[$i];
                 $net_total = $quota_data->balance + $total;
 
                 $order_data->update(['quantity' => $request->quantity[$i]]);
@@ -172,6 +172,7 @@ class OrderController extends Controller
                 $topup_data = new TopUp;
                 $topup_data->user_id = $user_id;
                 $topup_data->action = "Consume";
+                $topup_data->schedule_id = Schedule::where('date', $date)->pluck('id')[$i];
                 $topup_data->amount = $request->quantity[$i];
                 $topup_data->save();
 
