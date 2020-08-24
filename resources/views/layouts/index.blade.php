@@ -105,6 +105,12 @@
                     </li>
                     @else
                     <li class="nav-item ">
+                        <a class="nav-link" href="{{ route('user-view-orders.index') }}">
+                            <i class="nc-icon nc-paper-2"></i>
+                            <p>View Order</p>
+                        </a>
+                    </li>
+                    <li class="nav-item ">
                         <a class="nav-link" href="{{ route('orders.index') }}">
                             <i class="nc-icon nc-circle-09"></i>
                             <p>Order</p>

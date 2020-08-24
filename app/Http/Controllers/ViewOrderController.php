@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\FoodMenu;
 use App\Models\Order;
 use App\Models\Schedule;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ViewOrderController extends Controller
 {
@@ -44,5 +44,11 @@ class ViewOrderController extends Controller
         ->orderBy('user_id')->get()->groupBy('user_id');
 
         return view('view-orders.show', compact('orders_data', 'schedule', 'date', 'food_data', 'order_data', 'get_user_id_by_date', 'get_foodmenu_id_by_date'));
+    }
+
+    public function userShow(){
+        $order_data = Order::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
+        // return $order_data;
+        return view('view-orders.user.show',compact('order_data'));
     }
 }

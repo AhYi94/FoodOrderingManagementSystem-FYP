@@ -1,6 +1,6 @@
 <?php
 
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,4 +52,8 @@ Route::group(['middleware' => ['auth']], function () {
     //Order Route
     Route::resource('/orders', 'OrderController')->except('store');
     Route::post('/orders/{order}', 'OrderController@store')->name('orders.store');
+
+    //View Order route
+    Route::get('/user/view-orders', 'ViewOrderController@userShow')->name('user-view-orders.index');
+    
 });
