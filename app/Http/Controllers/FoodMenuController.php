@@ -6,7 +6,6 @@ use App\DataTables\FoodMenusDataTable;
 use App\Models\FoodMenu;
 use App\Models\Schedule;
 use Carbon\Carbon;
-use Carbon\Traits\Timestamp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,17 +55,6 @@ class FoodMenuController extends Controller
 
         $food_data->save();
         return redirect('food-menus/create')->with(['message' => 'Food Menu created!', 'alert' => 'success']);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\FoodMenu  $foodMenu
-     * @return \Illuminate\Http\Response
-     */
-    public function show(FoodMenu $foodMenu)
-    {
-        //
     }
 
     /**

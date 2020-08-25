@@ -37,18 +37,11 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
-
 </div>
 </div>
-
-
-
-
 @endsection
-
 
 @push('scripts')
 <script>
@@ -68,10 +61,6 @@ $('form').submit(function(e) {
     }
     
 });
-
-// if($quota_data->quantity < 0){
-//     alert('Not Enought!');
-// }
 </script>
 
 @endpush

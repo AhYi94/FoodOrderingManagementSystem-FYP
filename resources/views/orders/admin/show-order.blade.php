@@ -2,30 +2,6 @@
 @section('content')
 <div class="content">
     <div class="row">
-        {{-- @foreach ($date_orders as $date_order)
-        <div class="col-md-3">
-            <form class="form" method="POST" action="{{ route('orders.store') }}">
-        @csrf
-        @method('POST')
-        <div class="card ">
-            <div class="card-header ">
-                <h4 class="card-title text-center">{{$date_order->food->name}}</h4>
-                <p class="card-category"></p>
-                <img class="img-container" src="/storage/{{$date_order->food->image}}" />
-                <input type="number" class="form-control d-none" name="id" value="{{$date_order->food->id}}" />
-
-                <p class="card-category">Quanity</p>
-                <input type="number" class="form-control" name="quantity" />
-            </div>
-            <div class="card-body text-right">
-                <button type="submit" class="btn btn-primary btn-wd">Order</a>
-            </div>
-        </div>
-        </form>
-    </div>
-
-    @endforeach --}}
-
     <div class="col-md-12">
         <div class="card stacked-form">
             <div class="card-header ">
@@ -60,21 +36,17 @@
                     </div>
                 </form>
             </div>
-
         </div>
     </div>
-
 </div>
 </div>
 @endsection
-
 
 @push('scripts')
 <script>
     var total_quantity = 0;
     var before_get_array_value =  $("input[name='quantity[]']").map(function(){return total_quantity += parseInt($(this).val());}).get();
 
-    
 $('form').submit(function(e) {
     var total_quantity1 = 0;
     var balance = parseInt("{{$quota_data->balance}}");
@@ -91,11 +63,5 @@ $('form').submit(function(e) {
     }
     
 });
-
-// if($quota_data->quantity < 0){
-//     alert('Not Enought!');
-// }
 </script>
-
-
 @endpush

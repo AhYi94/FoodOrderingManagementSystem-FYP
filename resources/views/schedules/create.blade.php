@@ -4,7 +4,6 @@
 <div class="content">
     <div class="container-fluid">
         <div class="section-image">
-            <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-sm-6">

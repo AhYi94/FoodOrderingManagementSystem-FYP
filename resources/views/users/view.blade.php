@@ -10,11 +10,9 @@ span.h6 {
 <div class="content">
     <div class="container-fluid">
         <div class="section-image">
-            <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-sm-6">
-
                         <div class="card ">
                             <div class="card-header ">
                                 <div class="card-header">
@@ -33,7 +31,6 @@ span.h6 {
                                 <div class="clearfix"></div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

@@ -7,7 +7,6 @@
     </ul>
 </div>
 @endif
-
 <div class="row">
     <div class="col-md-6 ">
         <div class="form-group">
@@ -17,7 +16,6 @@
         </div>
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-6">
         <select multiple data-title="Select Food Item" name="fooditem[]" class="selectpicker"

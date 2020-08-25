@@ -48,7 +48,6 @@ class ViewOrderController extends Controller
 
     public function userShow(){
         $order_data = Order::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
-        // return $order_data;
         return view('view-orders.user.show',compact('order_data'));
     }
 }

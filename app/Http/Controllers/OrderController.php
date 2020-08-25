@@ -34,26 +34,6 @@ class OrderController extends Controller
     public function indexAdmin(OrdersDataTable $ordersDataTable)
     {
         return $ordersDataTable->render('orders.admin.index');
-
-        // $fooditems = FoodMenu::all();
-        // $schedule_items = Schedule::orderBy('date')->get()->where('date', '=>', Carbon::now()->addDay()->toDateString())->groupBy('date');
-
-        // if(Auth::user()->role == 'admin'){
-        //     return view('orders.admin.index', compact('fooditems', 'schedule_items'));
-        // }
-        // else{
-        //     return abort(404);
-        // }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -82,8 +62,6 @@ class OrderController extends Controller
                 $order_data->update(['quantity' => $request->quantity[$i]]);
                 $topup_data->update(['amount' => $request->quantity[$i]]);
                 $quota_data->update(['balance' => $net_total]);
-                //    Quota::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i])
-                //    ->update(['quantity'=> $request->quantity[$i]]);
             } else {
 
                 $topup_data = new TopUp;
@@ -100,7 +78,6 @@ class OrderController extends Controller
                 $order_data->topup_id = $topup_data->id;
                 $order_data->save();
 
-
                 $quota_data = Quota::where('user_id', Auth::user()->id)->first();
                 $quota_data->balance -= $request->quantity[$i];
                 $quota_data->updated_at = Carbon::now();
@@ -110,7 +87,6 @@ class OrderController extends Controller
         }
         return redirect('orders')->with(['message' => 'Order successful!', 'alert' => 'success']);
     }
-
 
     /**
      * Display the specified resource.
@@ -185,54 +161,13 @@ class OrderController extends Controller
                 $order_data->topup_id = $topup_data->id;
                 $order_data->save();
 
-
                 $quota_data = Quota::where('user_id', $user_id)->first();
                 $quota_data->balance -= $request->quantity[$i];
                 $quota_data->updated_at = Carbon::now();
                 $quota_data->save();
             }
-
-
             $i++;
         }
-
         return redirect('/admin/orders')->with(['message' => 'Order successful!', 'alert' => 'success']);
-    }
-
-
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
     }
 }

@@ -82,12 +82,3 @@
         </div>
     </div>
 </div>
-{{-- <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label>About Me</label>
-                <textarea rows="4" cols="80" class="form-control" placeholder="Here can be your description"
-                    value="Mike"></textarea>
-            </div>
-        </div>
-    </div> --}}
