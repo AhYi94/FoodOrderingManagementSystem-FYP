@@ -24,8 +24,9 @@ class OrderController extends Controller
     {
         $fooditems = FoodMenu::all();
         $schedule_items = Schedule::orderBy('date')->get()->where('date', '>=', Carbon::now()->addDay()->toDateString())->groupBy('date');
+        $user_balance = Quota::where('user_id', Auth::user()->id)->first();
         if (Auth::user()->role == 'user') {
-            return view('orders.index', compact('fooditems', 'schedule_items'));
+            return view('orders.index', compact('fooditems', 'schedule_items', 'user_balance'));
         } else {
             return abort(404);
         }
@@ -44,6 +45,17 @@ class OrderController extends Controller
      */
     public function store(Request $request, $date)
     {
+
+        $rules = [
+            'quantity.*' => 'required',
+        ];
+    
+        $customMessages = [
+            'required' => 'The quantity field is required.'
+        ];
+    
+        $this->validate($request, $rules, $customMessages);
+
         $user_data = Order::where('user_id', Auth::user()->id)->first();
         $get_date = Schedule::where('date', $date)->pluck('id');
         $order_date = Order::whereIn('schedule_date', $get_date)->where('user_id', Auth::user()->id)->get(['schedule_date']);
@@ -51,10 +63,12 @@ class OrderController extends Controller
         foreach ($request->quantity as $quantity) {
 
             if (!is_null($order_date->first()) && $user_data) {
-                $order_data = Order::where('user_id', Auth::user()->id)->where('foodmenu_id', $request->id[$i])->where('schedule_date', $get_date);
+                $order_data = Order::where('user_id', Auth::user()->id)->where('foodmenu_id', $request->id[$i])->whereIn('schedule_date', $get_date);
                 $topup_id = Order::where('user_id', Auth::user()->id)->pluck('topup_id');
-                $topup_data = TopUp::where('user_id', Auth::user()->id)->where('id', $topup_id[$i]);
+                $topup_datas = TopUp::where('user_id', Auth::user()->id)->whereIn('id', $topup_id)->whereIn('schedule_id', $get_date)->get();
+                $topup_data = TopUp::where('id', $topup_datas[$i]->id);
                 $quota_data = Quota::where('user_id', Auth::user()->id)->first();
+
 
                 $total = $topup_data->first()->amount - $request->quantity[$i];
                 $net_total = $quota_data->balance + $total;
@@ -68,6 +82,7 @@ class OrderController extends Controller
                 $topup_data->user_id = Auth::user()->id;
                 $topup_data->action = "Consume";
                 $topup_data->amount = $request->quantity[$i];
+                $topup_data->schedule_id = Schedule::where('date', $date)->pluck('id')[$i];
                 $topup_data->save();
 
                 $order_data = new Order();
@@ -121,6 +136,9 @@ class OrderController extends Controller
 
     public function storeAdmin(Request $request, $user_id, $date)
     {
+        $validatedData = $request->validate([
+            'quantity[]' => 'required',
+        ]);
 
         $user_data = Order::where('user_id', $user_id)->first();
         $get_date = Schedule::where('date', $date)->pluck('id');
@@ -130,7 +148,7 @@ class OrderController extends Controller
         foreach ($request->quantity as $quantity) {
 
             if (!is_null($order_date->first()) && $user_data) {
-                $order_data = Order::where('user_id', Auth::user()->id)->where('foodmenu_id', $request->id[$i])->whereIn('schedule_date', $get_date);
+                $order_data = Order::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i])->whereIn('schedule_date', $get_date);
                 $topup_id = Order::where('user_id', $user_id)->pluck('topup_id');
                 $topup_datas = TopUp::where('user_id', $user_id)->whereIn('id', $topup_id)->whereIn('schedule_id', $get_date)->get();
                 $topup_data = TopUp::where('id', $topup_datas[$i]->id);
