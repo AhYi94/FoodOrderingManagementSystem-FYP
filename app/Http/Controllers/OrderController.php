@@ -49,11 +49,11 @@ class OrderController extends Controller
         $rules = [
             'quantity.*' => 'required',
         ];
-    
+
         $customMessages = [
             'required' => 'The quantity field is required.'
         ];
-    
+
         $this->validate($request, $rules, $customMessages);
 
         $user_data = Order::where('user_id', Auth::user()->id)->first();
@@ -136,13 +136,19 @@ class OrderController extends Controller
 
     public function storeAdmin(Request $request, $user_id, $date)
     {
-        $validatedData = $request->validate([
-            'quantity[]' => 'required',
-        ]);
+        $rules = [
+            'quantity.*' => 'required',
+        ];
+
+        $customMessages = [
+            'required' => 'The quantity field is required.'
+        ];
+
+        $this->validate($request, $rules, $customMessages);
 
         $user_data = Order::where('user_id', $user_id)->first();
         $get_date = Schedule::where('date', $date)->pluck('id');
-  
+
         $order_date = Order::whereIn('schedule_date', $get_date)->where('user_id', $user_id)->get(['schedule_date']);
         $i = 0;
         foreach ($request->quantity as $quantity) {
@@ -153,7 +159,7 @@ class OrderController extends Controller
                 $topup_datas = TopUp::where('user_id', $user_id)->whereIn('id', $topup_id)->whereIn('schedule_id', $get_date)->get();
                 $topup_data = TopUp::where('id', $topup_datas[$i]->id);
                 $quota_data = Quota::where('user_id', $user_id)->first();
-                
+
                 $total = $topup_datas[$i]->amount - $request->quantity[$i];
                 $net_total = $quota_data->balance + $total;
 
