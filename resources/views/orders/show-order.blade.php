@@ -55,20 +55,27 @@
 @push('scripts')
 <script>
     var total_quantity = 0;
-    var before_get_array_value =  $("input[name='quantity[]']").map(function(){return total_quantity += parseInt($(this).val());}).get();
+    var before_get_array_value =  $("input[name='quantity[]']").map(function(){return parseInt($(this).val());}).get();
+    before_get_array_value.forEach(myFunction);
+    function myFunction(item) {
+        total_quantity += item;
+    }
 
     
 $('form').submit(function(e) {
     var total_quantity1 = 0;
     var balance = parseInt("{{$user_balance->balance}}");
-    var after_get_array_value =  $("input[name='quantity[]']").map(function(){return total_quantity1 += parseInt($(this).val());}).get();
-    var quantity_difference = parseInt(before_get_array_value) - parseInt(after_get_array_value);
+    var after_get_array_value =  $("input[name='quantity[]']").map(function(){return parseInt($(this).val());}).get();
+    after_get_array_value.forEach(myFunction);
+    function myFunction(item) {
+        total_quantity1 += item;
+    }
+    var quantity_difference = parseInt(total_quantity) - parseInt(total_quantity1);
     var net_balance = balance + quantity_difference;
     if(net_balance < 0){
         alert("The order exceed the balance.");
         return false;
     }
-    
 });
 </script>
 

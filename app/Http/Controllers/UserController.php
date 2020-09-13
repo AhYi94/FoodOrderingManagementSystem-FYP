@@ -15,33 +15,17 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(UserDataTable $dataTable)
     {
         $user = \Auth::user();
         return $dataTable->render('users.index', compact('user'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -65,24 +49,12 @@ class UserController extends Controller
         return redirect('users/create')->with(['message' => 'User created!', 'alert' => 'success']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function show($username)
     {
         $user_data = User::where('name', $username)->first();
         return view('users.view', compact('user_data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function edit(User $user)
     {
         if(Auth::user()->role == 'admin'){
@@ -96,13 +68,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
@@ -124,12 +89,6 @@ class UserController extends Controller
         return redirect('users/' . $user_data->id . '/edit')->with(['message' => 'Profile updated!', 'alert' => 'success']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(User $user)
     {
         $user_data = User::find($user->id);

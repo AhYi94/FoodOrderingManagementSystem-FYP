@@ -11,19 +11,12 @@ use Yajra\DataTables\Services\DataTable;
 
 class FoodMenusDataTable extends DataTable
 {
-    /**
-     * Build DataTable class.
-     *
-     * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
-     */
     public function dataTable($query)
     {
         return datatables()
             ->eloquent($query)
             ->addColumn('action', function ($query) {
                 $actions = '<a href=' . route('food-menus.edit', $query) . ' class="btn btn-info btn-sm mr-1">Edit</a>';
-                // $actions .=  '<a href=' . route('food-menus.destroy', $query) . ' onclick="return confirm(\'Are you sure you want to delete this user?\');" class="btn btn-danger btn-sm">Delete</a>';
                 $actions .=  '<button class="btn btn-danger btn-sm delete btn-delete" data-id-variable="/food-menus/' . $query->id . '" >Delete</button>';
                 return $actions;
             })
@@ -37,22 +30,12 @@ class FoodMenusDataTable extends DataTable
                 return '<img src="storage/' . $query->image . '" border="0" width="50%" class="img-rounded" align="center" />';
             })->rawColumns(['image', 'action']);
     }
-    /**
-     * Get query source of dataTable.
-     *
-     * @param \App\FoodMenu $model
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
+
     public function query(FoodMenu $model)
     {
         return $model->newQuery();
     }
 
-    /**
-     * Optional method if you want to use html builder.
-     *
-     * @return \Yajra\DataTables\Html\Builder
-     */
     public function html()
     {
         return $this->builder()
@@ -77,11 +60,6 @@ class FoodMenusDataTable extends DataTable
             );
     }
 
-    /**
-     * Get columns.
-     *
-     * @return array
-     */
     protected function getColumns()
     {
         return [
@@ -97,11 +75,6 @@ class FoodMenusDataTable extends DataTable
         ];
     }
 
-    /**
-     * Get filename for export.
-     *
-     * @return string
-     */
     protected function filename()
     {
         return 'FoodMenus_' . date('YmdHis');

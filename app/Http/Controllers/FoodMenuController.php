@@ -11,32 +11,16 @@ use Illuminate\Support\Facades\Storage;
 
 class FoodMenuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(FoodMenusDataTable $dataTable)
     {
         return $dataTable->render('food-menus.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('food-menus.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -57,24 +41,11 @@ class FoodMenuController extends Controller
         return redirect('food-menus/create')->with(['message' => 'Food Menu created!', 'alert' => 'success']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\FoodMenu  $foodMenu
-     * @return \Illuminate\Http\Response
-     */
     public function edit(FoodMenu $foodMenu)
     {
         return view('food-menus.edit', compact('foodMenu'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\FoodMenu  $foodMenu
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, FoodMenu $foodMenu)
     {
         $validatedData = $request->validate([
@@ -96,12 +67,6 @@ class FoodMenuController extends Controller
         return redirect('food-menus/' . $food_data->id . '/edit')->with(['message' => 'Food Menu updated!', 'alert' => 'success']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\FoodMenu  $foodMenu
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(FoodMenu $foodMenu)
     {
         $food_data = FoodMenu::find($foodMenu->id);

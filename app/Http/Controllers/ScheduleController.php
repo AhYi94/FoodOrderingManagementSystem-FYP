@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $fooditems = FoodMenu::all();
@@ -20,12 +15,6 @@ class ScheduleController extends Controller
         return view('schedules.create', compact('fooditems', 'schedule_items'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 

@@ -15,11 +15,6 @@ use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $fooditems = FoodMenu::all();
@@ -37,17 +32,11 @@ class OrderController extends Controller
         return $ordersDataTable->render('orders.admin.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request, $date)
     {
 
         $rules = [
-            'quantity.*' => 'required',
+            'quantity.*' => 'required |integer| gte:0',
         ];
 
         $customMessages = [
@@ -103,12 +92,6 @@ class OrderController extends Controller
         return redirect('orders')->with(['message' => 'Order successful!', 'alert' => 'success']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
     public function show($date)
     {
         $date_orders = Schedule::where('date', $date)->get();
@@ -137,7 +120,7 @@ class OrderController extends Controller
     public function storeAdmin(Request $request, $user_id, $date)
     {
         $rules = [
-            'quantity.*' => 'required',
+            'quantity.*' => 'required |integer| gte:0',
         ];
 
         $customMessages = [
@@ -166,8 +149,6 @@ class OrderController extends Controller
                 $order_data->update(['quantity' => $request->quantity[$i]]);
                 $topup_data->update(['amount' => $request->quantity[$i]]);
                 $quota_data->update(['balance' => $net_total]);
-                //    Quota::where('user_id', $user_id)->where('foodmenu_id', $request->id[$i])
-                //    ->update(['quantity'=> $request->quantity[$i]]);
             } else {
 
                 $topup_data = new TopUp;
