@@ -27,7 +27,7 @@
                             <div class="form-group col-3">
                                 <h4 class="card-title text-center">{{$date_order->food->name}}</h4>
                                 <p class="card-category"></p>
-                                <img class="img-container" src="/storage/{{$date_order->food->image}}" />
+                                <img class="img-container h-50" src="/storage/{{$date_order->food->image}}" />
                                 <input type="number" class="form-control d-none" name="id[]"
                                     value="{{$date_order->food->id}}" />
                                 <p class="card-category">Quanity</p>
